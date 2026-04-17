@@ -7,6 +7,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
+import { useWorkflow } from "@/contexts/WorkflowContext";
 
 interface NavItem {
   label: string;
@@ -35,16 +36,6 @@ const NAV_ITEMS: NavItem[] = [
 
 const STEP_LABELS = ["준비", "업로드/분류", "기본 분석", "구조 분석", "종합 판단", "보고서 생성", "최종 승인"];
 
-const STEP_ROUTES: Record<number, string> = {
-  1: "/",
-  2: "/step2",
-  3: "/step3",
-  4: "/step4",
-  5: "/step56",
-  6: "/step56",
-  7: "/step56",
-};
-
 export default function AppShell({
   children,
   caseId = "2024-BOND-082",
@@ -55,6 +46,17 @@ export default function AppShell({
 }: AppShellProps) {
   const [location] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const { state } = useWorkflow();
+
+  const stepRoutes: Record<number, string> = {
+    1: "/",
+    2: "/step2",
+    3: "/step3",
+    4: state.branchType === "subordinated" ? "/step3b" : state.branchType === "perpetual" ? "/step3c" : "/step3",
+    5: "/step4",
+    6: "/step5",
+    7: "/step6",
+  };
 
   const handlePlaceholderClick = () => {
     toast.info("준비 중인 기능입니다.");
@@ -163,7 +165,7 @@ export default function AppShell({
               const stepNum = idx + 1;
               const isActive = stepNum === currentStep;
               const isComplete = stepNum < currentStep;
-              const route = STEP_ROUTES[stepNum];
+              const route = stepRoutes[stepNum];
               return (
                 <div key={stepNum} className="flex items-center flex-shrink-0">
                   {route && isComplete ? (

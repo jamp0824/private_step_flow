@@ -105,7 +105,25 @@ export default function Dashboard() {
                     <td className="px-4 py-3">{getRiskBadge(c.risk)}</td>
                     <td className="px-4 py-3">{getStatusBadge(c.status)}</td>
                     <td className="px-4 py-3">
-                      <Link href={c.step === 2 ? "/step2" : c.step === 3 ? "/step3" : c.step === 4 ? "/step4" : c.step >= 5 ? "/step56" : "/step2"}>
+                      <Link
+                        href={
+                          c.step === 2
+                            ? "/step2"
+                            : c.step === 3
+                            ? "/step3"
+                            : c.step === 4
+                            ? c.type === "후순위채"
+                              ? "/step3b"
+                              : c.type === "영구채"
+                              ? "/step3c"
+                              : "/step3"
+                            : c.step === 5
+                            ? "/step4"
+                            : c.step === 6
+                            ? "/step5"
+                            : "/step6"
+                        }
+                      >
                         <button className="px-3 py-1 text-[10px] font-bold border border-[#777777] hover:bg-[#000000] hover:text-[#ffffff] hover:border-[#000000] transition-colors">
                           검토 계속
                         </button>

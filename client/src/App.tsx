@@ -4,13 +4,15 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { WorkflowProvider } from "./contexts/WorkflowContext";
 import Dashboard from "./pages/Dashboard";
 import Step2Upload from "./pages/Step2Upload";
 import Step3Analysis from "./pages/Step3Analysis";
 import Step3B from "./pages/Step3B";
 import Step3C from "./pages/Step3C";
 import Step4Review from "./pages/Step4Review";
-import Step56Report from "./pages/Step56Report";
+import Step5Report from "./pages/Step5Report";
+import Step6Approval from "./pages/Step6Approval";
 
 function Router() {
   return (
@@ -21,7 +23,8 @@ function Router() {
       <Route path="/step3b" component={Step3B} />
       <Route path="/step3c" component={Step3C} />
       <Route path="/step4" component={Step4Review} />
-      <Route path="/step56" component={Step56Report} />
+      <Route path="/step5" component={Step5Report} />
+      <Route path="/step6" component={Step6Approval} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
@@ -32,10 +35,12 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <WorkflowProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </WorkflowProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
