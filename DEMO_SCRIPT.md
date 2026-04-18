@@ -3,24 +3,26 @@
 # DEMO_SCRIPT
 
 ## Demo Path
-1. `/stage1` 대시보드에서 `심사 시작` 클릭
-2. `/stage2`에서 `세션 시작` 클릭
-3. 파싱 오류 행에서 `재파싱 완료 표시` 클릭
-4. `다음 루프 상태`를 눌러 `required → requested → waiting → reuploaded → rechecking → resolved` 흐름을 빠르게 보여주기
-5. `비교 결과 검토 완료 표시` 클릭
-6. 브랜치를 `후순위채`로 선택하고 `구조 확정` 클릭
-7. `다음 단계: Stage 3` 클릭
-8. `/stage3`에서 `공통 분석 완료 표시` 클릭
-9. `다음 단계: 브랜치 분석` 클릭
-10. `/stage3/subordinated`에서 `브랜치 출력 준비 완료 표시` 클릭
-11. `다음 단계: Stage 4` 클릭
-12. `/stage4`에서 `수정 후 확정` 클릭 후 판단 근거 1줄 입력
-13. `다음 단계: 보고서 작성` 클릭
-14. `/stage5`에서 `Insert AI Draft`를 한두 섹션에 눌러 편집 가능성과 evidence badge를 보여주기
-15. source badge 하나를 눌러 `Phase 2: source highlight viewer` toast 확인
-16. `승인 단계로 제출` 클릭
-17. `/stage6`에서 승인 코멘트 1줄 입력 후 `승인` 클릭
-18. `/stage7`에서 covenant tracker, Delay / EOD rail, AI reminder suggestions를 보여주며 `Phase 1 read-only` 배너 설명
+1. `/stage1` 대시보드에서 `New Review Request` 클릭
+2. modal에서 임의 파일 하나를 선택해 파일명 캡처를 보여주기
+3. `98% General Private Bond` 분류 패널과 필수 문서 체크리스트를 설명한 뒤 `Stage 2로 이동` 클릭
+4. `/stage2`에서 `세션 시작` 클릭
+5. 파싱 오류 행에서 `재파싱 완료 표시` 클릭
+6. `다음 루프 상태`를 눌러 `required → requested → waiting → reuploaded → rechecking → resolved` 흐름을 빠르게 보여주기
+7. `비교 결과 검토 완료 표시` 클릭
+8. 브랜치를 `후순위채`로 선택하고 `구조 확정` 클릭
+9. `다음 단계: Stage 3` 클릭
+10. `/stage3`에서 `공통 분석 완료 표시` 클릭
+11. `다음 단계: 브랜치 분석` 클릭
+12. `/stage3/subordinated`에서 `브랜치 출력 준비 완료 표시` 클릭
+13. `다음 단계: Stage 4` 클릭
+14. `/stage4`에서 `수정 후 확정` 클릭 후 판단 근거 1줄 입력
+15. `다음 단계: 보고서 작성` 클릭
+16. `/stage5`에서 `Insert AI Draft`를 한두 섹션에 눌러 편집 가능성과 evidence badge를 보여주기
+17. source badge 하나를 눌러 `Phase 2: source highlight viewer` toast 확인
+18. `승인 단계로 제출` 클릭
+19. `/stage6`에서 승인 코멘트 1줄 입력 후 `승인` 클릭
+20. `/stage7`에서 covenant tracker, Delay / EOD rail, AI reminder suggestions를 보여주며 `Phase 1 read-only` 배너 설명
 
 ## Do-Not-Click List
 - 좌측 사이드바의 `포트폴리오`, `규제 준수`, `보고서`
@@ -29,6 +31,7 @@
 - Stage 7의 `Phase 2 액션 보기`, `모니터링 패키지 내보내기`
 - AI Copilot의 extra action 버튼들
 - Stage 5 source badge는 눌러도 되지만 실제 뷰어는 없고 Phase 2 toast만 뜸
+- `Reset Demo State`는 복구용으로만 사용하고 메인 스토리에서는 누르지 않기
 
 ## Expected Q&A
 ### Where's the backend?
