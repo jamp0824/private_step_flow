@@ -41,6 +41,7 @@ interface WorkflowContextType {
   rejectCase: (comment: string) => void;
   returnForRework: (comment: string) => void;
   setApproverComment: (value: string) => void;
+  resetWorkflow: () => void;
   canProceedFromStep2: boolean;
   branchRoute: string;
   canAdvanceFromStep3: boolean;
@@ -48,7 +49,7 @@ interface WorkflowContextType {
   canSubmitFromStep5: boolean;
 }
 
-const STORAGE_KEY = "bond-review-workflow-v2";
+export const WORKFLOW_STORAGE_KEY = "bond-review-workflow-v2";
 
 const DEFAULT_STATE: WorkflowState = {
   branchType: "general",
@@ -97,7 +98,7 @@ export function WorkflowProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<WorkflowState>(() => {
     if (typeof window === "undefined") return DEFAULT_STATE;
 
-    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const stored = window.localStorage.getItem(WORKFLOW_STORAGE_KEY);
     if (!stored) return DEFAULT_STATE;
 
     try {
@@ -109,7 +110,7 @@ export function WorkflowProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const nextState = { ...state, stageState: deriveStageState(state) };
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
+    window.localStorage.setItem(WORKFLOW_STORAGE_KEY, JSON.stringify(nextState));
   }, [state]);
 
   const value = useMemo<WorkflowContextType>(() => {
@@ -175,6 +176,10 @@ export function WorkflowProvider({ children }: { children: React.ReactNode }) {
           decisionStatus: prev.decisionStatus === "pending" ? "pending" : prev.decisionStatus,
         })),
       setApproverComment: (value) => setState((prev) => ({ ...prev, approverComment: value })),
+      resetWorkflow: () => {
+        window.localStorage.removeItem(WORKFLOW_STORAGE_KEY);
+        setState(DEFAULT_STATE);
+      },
       canProceedFromStep2,
       branchRoute,
       canAdvanceFromStep3,

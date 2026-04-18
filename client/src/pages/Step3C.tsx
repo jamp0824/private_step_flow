@@ -9,11 +9,25 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { useStageGuard } from "@/hooks/useStageGuard";
 import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 export default function Step3C() {
   const [, navigate] = useLocation();
   const { state, markBranchAnalysisReady } = useWorkflow();
+
+  useStageGuard({
+    canAccess:
+      state.sessionStarted &&
+      state.parseErrorResolved &&
+      state.comparisonReviewed &&
+      state.branchLocked &&
+      state.supplementStatus === "resolved" &&
+      state.commonAnalysisReady &&
+      state.branchType === "perpetual",
+    redirectTo: STAGE_ROUTE_MAP[3],
+    message: "영구채 브랜치에 진입하려면 Stage 2 구조 확정과 Stage 3 공통 분석이 필요합니다.",
+  });
 
   const copilotPanel = (
     <AICopilotPanel scenario={getAICopilotScenario(3, "perpetual")} />

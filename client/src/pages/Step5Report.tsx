@@ -7,6 +7,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { useStageGuard } from "@/hooks/useStageGuard";
 import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 interface ReportSectionState {
@@ -61,6 +62,12 @@ const BASE_SECTION_CONTENT: Omit<ReportSectionState, "text">[] = [
 export default function Step5Report() {
   const [, navigate] = useLocation();
   const { state, canSubmitFromStep5, submitForApproval } = useWorkflow();
+
+  useStageGuard({
+    canAccess: (state.decisionStatus === "confirmed" || state.decisionStatus === "modified") && state.supplementStatus === "resolved",
+    redirectTo: STAGE_ROUTE_MAP[4],
+    message: "Stage 4 판단이 완료되지 않아 이전 단계로 이동합니다.",
+  });
   const [sections, setSections] = useState<ReportSectionState[]>(() =>
     BASE_SECTION_CONTENT.map((section) => ({
       ...section,

@@ -3,10 +3,12 @@
  * Overview of active cases, recent activity, system status
  */
 
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
 import { getStageRoute } from "@/config/stages";
+import { STAGE_ROUTE_MAP } from "@/config/stages";
+import { useWorkflow } from "@/contexts/WorkflowContext";
 
 const CASES = [
   { id: "DEMO-BOND-082", issuer: "프로젝트 오메가", type: "일반사채", amount: "124억", stage: 4, stageLabel: "종합 판단", status: "진행중", risk: "HIGH" },
@@ -35,13 +37,32 @@ function getStatusBadge(status: string) {
 }
 
 export default function Dashboard() {
+  const [, navigate] = useLocation();
+  const { resetWorkflow } = useWorkflow();
+
   return (
     <AppShell currentStage={0} showRightPanel={false}>
       <div className="p-8 max-w-6xl mx-auto">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-black text-[#000000] tracking-tight">대시보드</h1>
-          <p className="text-sm text-[#5e5e5e] mt-1 font-medium">사모사채 심사 현황 및 진행 중인 사건 목록</p>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-black text-[#000000] tracking-tight">대시보드</h1>
+            <p className="text-sm text-[#5e5e5e] mt-1 font-medium">사모사채 심사 현황 및 진행 중인 사건 목록</p>
+          </div>
+          <button
+            onClick={() => {
+              const confirmed = window.confirm("데모 상태를 초기화하고 Stage 1으로 돌아갈까요?");
+
+              if (!confirmed) return;
+
+              resetWorkflow();
+              navigate(STAGE_ROUTE_MAP[1]);
+              toast.success("데모 상태를 초기화했습니다.");
+            }}
+            className="px-3 py-2 border border-[#777777] text-[11px] font-bold text-[#000000] hover:bg-[#f3f3f3] transition-colors"
+          >
+            Reset Demo State
+          </button>
         </div>
 
         {/* Stats Row */}

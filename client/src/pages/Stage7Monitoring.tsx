@@ -6,6 +6,7 @@ import AICopilotPanel from "@/components/AICopilotPanel";
 import AppShell from "@/components/AppShell";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { useStageGuard } from "@/hooks/useStageGuard";
 import { getAICopilotScenario } from "@/mocks/aiCopilot";
 import { STAGE7_MONITORING_MOCK } from "@/mocks/stage7Monitoring";
 
@@ -28,6 +29,12 @@ function getStatusBadge(status: "ON TRACK" | "WATCH" | "BREACH RISK") {
 export default function Stage7Monitoring() {
   const { state } = useWorkflow();
   const { summary, covenantTracker, financialSignals, alerts, reminders } = STAGE7_MONITORING_MOCK;
+
+  useStageGuard({
+    canAccess: state.reviewStatus === "approved",
+    redirectTo: STAGE_ROUTE_MAP[6],
+    message: "승인 완료 건만 Stage 7 모니터링 콘솔에 진입할 수 있습니다.",
+  });
 
   const copilotPanel = (
     <AICopilotPanel scenario={getAICopilotScenario(7, state.branchType)} />

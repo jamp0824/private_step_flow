@@ -4,6 +4,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { useStageGuard } from "@/hooks/useStageGuard";
 import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 function getApprovalLabel(status: string) {
@@ -17,6 +18,12 @@ function getApprovalLabel(status: string) {
 export default function Step6Approval() {
   const [, navigate] = useLocation();
   const { state, setApproverComment, approveCase, rejectCase, returnForRework } = useWorkflow();
+
+  useStageGuard({
+    canAccess: state.reviewStatus === "submitted" || state.reviewStatus === "approved" || state.reviewStatus === "rejected",
+    redirectTo: STAGE_ROUTE_MAP[5],
+    message: "Stage 5 제출이 완료되지 않아 이전 단계로 이동합니다.",
+  });
 
   const copilotPanel = (
     <AICopilotPanel scenario={getAICopilotScenario(6, state.branchType)} />

@@ -9,6 +9,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { getBranchStageRoute, STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { useStageGuard } from "@/hooks/useStageGuard";
 import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 const RISK_METRICS = [
@@ -32,6 +33,12 @@ export default function Step4Review() {
     requestSupplement,
     canAdvanceFromStep4,
   } = useWorkflow();
+
+  useStageGuard({
+    canAccess: state.commonAnalysisReady && (state.branchType === "general" || state.branchAnalysisReady),
+    redirectTo: state.branchType === "general" ? STAGE_ROUTE_MAP[3] : getBranchStageRoute(state.branchType),
+    message: "Stage 3 출력 조건이 완료되지 않아 이전 단계로 이동합니다.",
+  });
 
   const copilotPanel = (
     <AICopilotPanel scenario={getAICopilotScenario(4, state.branchType)} />

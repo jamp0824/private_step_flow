@@ -9,6 +9,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { useStageGuard } from "@/hooks/useStageGuard";
 import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 const ANALYSIS_ITEMS = [
@@ -31,6 +32,12 @@ const REQUIRED_DOCS = [
 export default function Step3Analysis() {
   const [, navigate] = useLocation();
   const { state, branchRoute, markCommonAnalysisReady, canAdvanceFromStep3 } = useWorkflow();
+
+  useStageGuard({
+    canAccess: state.sessionStarted && state.parseErrorResolved && state.comparisonReviewed && state.branchLocked && state.supplementStatus === "resolved",
+    redirectTo: STAGE_ROUTE_MAP[2],
+    message: "Stage 2 선행 조건이 완료되지 않아 이전 단계로 이동합니다.",
+  });
 
   const copilotPanel = (
     <AICopilotPanel scenario={getAICopilotScenario(3, state.branchType)} />
