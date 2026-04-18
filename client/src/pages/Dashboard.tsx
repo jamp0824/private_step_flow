@@ -3,6 +3,7 @@
  * Overview of active cases, recent activity, system status
  */
 
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
@@ -25,6 +26,14 @@ const STATS = [
   { label: "AI 분석 정확도", value: "94.1%", sub: "최근 30건" },
 ];
 
+const REQUIRED_INTAKE_DOCS = [
+  "투자검토요청서",
+  "회사 개요서 / IM",
+  "Term Sheet",
+  "발행 개요서",
+  "사모사채 발행 조건표",
+];
+
 function getRiskBadge(risk: string) {
   if (risk === "HIGH") return <span className="px-2 py-0.5 text-[10px] font-bold bg-[#000000] text-[#ffffff]">HIGH</span>;
   if (risk === "MODERATE") return <span className="px-2 py-0.5 text-[10px] font-bold border border-[#777777] text-[#000000]">MODERATE</span>;
@@ -39,8 +48,20 @@ function getStatusBadge(status: string) {
 
 export default function Dashboard() {
   const [, navigate] = useLocation();
+  const [isIntakeOpen, setIsIntakeOpen] = useState(false);
+  const [capturedFileName, setCapturedFileName] = useState("");
   const { setActiveCaseId } = useDemoCase();
   const { resetWorkflow } = useWorkflow();
+
+  const handleCreateReviewRequest = () => {
+    const caseSuffix = String(Date.now()).slice(-4);
+    const nextCaseId = `DEMO-REQ-${caseSuffix}`;
+
+    setActiveCaseId(nextCaseId);
+    setIsIntakeOpen(false);
+    toast.success("새 검토 요청이 접수되어 Stage 2로 이동합니다.");
+    navigate(STAGE_ROUTE_MAP[2]);
+  };
 
   return (
     <AppShell currentStage={0} showRightPanel={false}>
@@ -84,11 +105,12 @@ export default function Dashboard() {
             <div className="text-sm font-bold text-[#ffffff]">새 채권 심사 시작</div>
             <div className="text-xs text-[#c6c6c6] mt-0.5">새로운 사모사채 투자 건을 접수하고 AI 보조 심사를 시작합니다.</div>
           </div>
-          <Link href="/stage2">
-            <button className="px-5 py-2.5 bg-[#ffffff] text-[#000000] text-sm font-bold hover:bg-[#e2e2e2] transition-colors flex-shrink-0">
-              심사 시작 →
-            </button>
-          </Link>
+          <button
+            onClick={() => setIsIntakeOpen(true)}
+            className="px-5 py-2.5 bg-[#ffffff] text-[#000000] text-sm font-bold hover:bg-[#e2e2e2] transition-colors flex-shrink-0"
+          >
+            New Review Request →
+          </button>
         </div>
 
         {/* Active Cases Table */}
@@ -189,6 +211,81 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+
+        {isIntakeOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4">
+            <div className="w-full max-w-4xl border border-[#000000] bg-[#f9f9f9]">
+              <div className="flex items-center justify-between border-b border-[#777777] px-6 py-4 bg-[#ffffff]">
+                <div>
+                  <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider">Stage 1. Review Request Intake</div>
+                  <div className="text-xl font-black text-[#000000] mt-1">New Review Request</div>
+                </div>
+                <button onClick={() => setIsIntakeOpen(false)} className="text-xs font-bold text-[#5e5e5e] hover:text-[#000000]">
+                  닫기
+                </button>
+              </div>
+
+              <div className="grid grid-cols-[minmax(0,1fr)_320px] gap-6 p-6">
+                <div className="space-y-5">
+                  <section className="bp-card">
+                    <h3 className="text-sm font-bold text-[#000000] mb-3">파일 업로드 존</h3>
+                    <label className="block border border-dashed border-[#777777] bg-[#ffffff] p-5 cursor-pointer hover:bg-[#f3f3f3] transition-colors">
+                      <div className="text-xs font-bold text-[#000000]">파일명만 캡처합니다. 실제 업로드는 수행하지 않습니다.</div>
+                      <div className="text-[11px] text-[#5e5e5e] mt-1">{capturedFileName || "예: private_bond_demo_request.pdf"}</div>
+                      <input
+                        type="file"
+                        className="mt-3 block text-[11px] text-[#5e5e5e]"
+                        onChange={(event) => setCapturedFileName(event.target.files?.[0]?.name || "")}
+                      />
+                    </label>
+                  </section>
+
+                  <section className="bp-card">
+                    <h3 className="text-sm font-bold text-[#000000] mb-3">Required Document Checklist</h3>
+                    <div className="space-y-2">
+                      {REQUIRED_INTAKE_DOCS.map((doc) => (
+                        <div key={doc} className="flex items-center gap-2 text-xs">
+                          <div className={`w-4 h-4 flex items-center justify-center ${capturedFileName ? "bg-[#000000]" : "border border-[#777777]"}`}>
+                            {capturedFileName && <span className="material-symbols-outlined text-[11px] text-[#ffffff]">check</span>}
+                          </div>
+                          <span className="text-[#000000]">{doc}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                </div>
+
+                <aside className="space-y-5">
+                  <section className="bp-card">
+                    <div className="text-[10px] font-bold text-[#5e5e5e] uppercase tracking-wide mb-2">AI Product Classification</div>
+                    <div className="text-3xl font-black text-[#000000]">98%</div>
+                    <div className="text-sm font-bold text-[#000000] mt-1">General Private Bond</div>
+                    <div className="text-[11px] text-[#5e5e5e] mt-2">콜옵션·후순위·영구채 키워드가 약하여 일반 사모사채 가능성이 가장 높게 분류되었습니다.</div>
+                    <div className="mt-3 border border-[#777777] bg-[#f3f3f3] p-3 text-[11px] text-[#5e5e5e]">
+                      분류 근거: 조건표 초안, 발행 개요, 요청서 메타정보
+                    </div>
+                  </section>
+
+                  <section className="bp-card">
+                    <div className="text-[10px] font-bold text-[#5e5e5e] uppercase tracking-wide mb-3">Intake Controls</div>
+                    <button
+                      onClick={handleCreateReviewRequest}
+                      disabled={!capturedFileName}
+                      className={
+                        capturedFileName
+                          ? "btn-primary w-full"
+                          : "w-full px-4 py-2 border border-[#c6c6c6] text-sm font-bold text-[#777777] cursor-not-allowed"
+                      }
+                    >
+                      Stage 2로 이동
+                    </button>
+                    <div className="text-[11px] text-[#5e5e5e] mt-2">업로드 파일은 저장되지 않으며 파일명만 현재 세션에 반영됩니다.</div>
+                  </section>
+                </aside>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AppShell>
   );
