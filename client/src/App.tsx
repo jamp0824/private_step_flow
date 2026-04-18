@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { WorkflowProvider } from "./contexts/WorkflowContext";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+import Stage7Monitoring from "./pages/Stage7Monitoring";
 import Step2Upload from "./pages/Step2Upload";
 import Step3Analysis from "./pages/Step3Analysis";
 import Step3B from "./pages/Step3B";
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/stage4" component={Step4Review} />
       <Route path="/stage5" component={Step5Report} />
       <Route path="/stage6" component={Step6Approval} />
+      <Route path="/stage7" component={Stage7Monitoring} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
