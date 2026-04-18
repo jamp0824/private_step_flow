@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
+import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 
 function getApprovalLabel(status: string) {
@@ -26,7 +27,7 @@ export default function Step6Approval() {
           excerpt: "종합 판단, 보고서 초안, 조건부 승인 항목이 모두 포함되었습니다.",
         },
       ]}
-      recommendation="반려 또는 재작업 요청 시 코멘트를 남겨 Step 5로 명확히 되돌리십시오."
+      recommendation="반려 또는 재작업 요청 시 코멘트를 남겨 Stage 5로 명확히 되돌리십시오."
       analysisLabel="승인 패키지 검토"
     />
   );
@@ -36,6 +37,7 @@ export default function Step6Approval() {
   const handleApprove = () => {
     approveCase(state.approverComment || "승인 완료");
     toast.success("승인이 완료되고 결과가 기록되었습니다.");
+    navigate(STAGE_ROUTE_MAP[7]);
   };
 
   const handleReject = () => {
@@ -45,15 +47,15 @@ export default function Step6Approval() {
 
   const handleReturn = () => {
     returnForRework(state.approverComment || "보고서 보완 후 재제출 필요");
-    toast.info("재작업 요청 상태로 Step 5로 복귀합니다.");
-    navigate("/step5");
+    toast.info("재작업 요청 상태로 Stage 5로 복귀합니다.");
+    navigate(STAGE_ROUTE_MAP[5]);
   };
 
   return (
-    <AppShell currentStep={7} rightPanel={copilotPanel}>
+    <AppShell currentStage={6} rightPanel={copilotPanel}>
       <div className="p-8 max-w-4xl">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Step 6. 승인 / 결과 기록</div>
+          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Stage 6. 승인 / 결과 기록</div>
           <h1 className="text-3xl font-black text-[#000000] tracking-tight">승인, 반려, 재작업 처리</h1>
           <p className="text-sm text-[#5e5e5e] mt-1.5 font-medium">승인자는 이 단계에서만 최종 승인, 반려, 재작업 요청을 수행합니다.</p>
         </div>
@@ -85,7 +87,7 @@ export default function Step6Approval() {
               <div className="space-y-2 text-xs text-[#1a1c1c]">
                 <div className="border border-[#e2e2e2] px-3 py-2">승인: 사건 종료 및 결과 통보</div>
                 <div className="border border-[#e2e2e2] px-3 py-2">반려: 승인 거절 및 사유 기록</div>
-                <div className="border border-[#e2e2e2] px-3 py-2">재작업: Step 5로 복귀</div>
+                <div className="border border-[#e2e2e2] px-3 py-2">재작업: Stage 5로 복귀</div>
               </div>
             </div>
           </div>
@@ -143,7 +145,7 @@ export default function Step6Approval() {
         </div>
 
         <div className="flex items-center justify-between pt-6 mt-6 border-t border-[#c6c6c6]">
-          <Link href="/step5">
+          <Link href={STAGE_ROUTE_MAP[5]}>
             <button className="px-5 py-2.5 border border-[#777777] text-sm font-bold text-[#5e5e5e] hover:bg-[#f3f3f3] transition-colors">
               ← 이전: 보고서 작성
             </button>

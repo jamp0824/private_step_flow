@@ -7,6 +7,7 @@ import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
+import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 
 const ANALYSIS_ITEMS = [
@@ -44,7 +45,7 @@ export default function Step3Analysis() {
           excerpt: "최근 신용등급 변동 기사 및 유사 심사사례를 참조 근거로 선택할 수 있습니다.",
         },
       ]}
-      recommendation="공통 분석 완료 후 잠긴 브랜치에 따라 Step 3 분기 또는 Step 4로 이동하십시오."
+      recommendation="공통 분석 완료 후 잠긴 브랜치에 따라 Stage 3 분기 또는 Stage 4로 이동하십시오."
       analysisLabel="분석 갱신"
       extraActions={[
         { label: "유사 사례 검색" },
@@ -54,13 +55,13 @@ export default function Step3Analysis() {
   );
 
   const branchLabel = state.branchType === "general" ? "일반채" : state.branchType === "subordinated" ? "후순위채" : "영구채";
-  const nextLabel = state.branchType === "general" ? "다음 단계: 종합 판단 →" : "다음 단계: 구조 분석 →";
+  const nextLabel = state.branchType === "general" ? "다음 단계: Stage 4 →" : "다음 단계: 브랜치 분석 →";
 
   return (
-    <AppShell currentStep={3} rightPanel={copilotPanel}>
+    <AppShell currentStage={3} rightPanel={copilotPanel}>
       <div className="p-8 max-w-5xl">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Step 3. Common Analysis</div>
+          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Stage 3. Common Analysis</div>
           <h1 className="text-3xl font-black text-[#000000] tracking-tight">기본 데이터 분석 및 사실 검증</h1>
           <p className="text-sm text-[#5e5e5e] mt-1.5 font-medium">추가 자료 수집, 검색, 공통 분석, 세부 조건 추출을 수행하고 브랜치 출력으로 넘깁니다.</p>
         </div>
@@ -68,7 +69,7 @@ export default function Step3Analysis() {
         <div className="mb-6 border border-[#000000] bg-[#000000] p-4 text-[#ffffff]">
           <div className="text-[10px] font-bold uppercase tracking-wide mb-1">Locked Branch</div>
           <div className="text-lg font-black">{branchLabel}</div>
-          <div className="text-xs text-[#e2e2e2] mt-1">이 분기는 Step 2에서 확정되었으며 이 화면에서는 변경할 수 없습니다.</div>
+          <div className="text-xs text-[#e2e2e2] mt-1">이 분기는 Stage 2에서 확정되었으며 이 화면에서는 변경할 수 없습니다.</div>
         </div>
 
         <div className="grid grid-cols-3 gap-6">
@@ -126,7 +127,7 @@ export default function Step3Analysis() {
               <button
                 onClick={() => {
                   markCommonAnalysisReady();
-                  toast.success("공통 분석을 Step 3 출력 준비 상태로 표시했습니다.");
+                  toast.success("공통 분석을 Stage 3 출력 준비 상태로 표시했습니다.");
                 }}
                 className={`mt-4 px-4 py-2 text-xs font-bold transition-colors ${
                   state.commonAnalysisReady ? "border border-[#777777] text-[#000000]" : "bg-[#000000] text-[#ffffff] hover:bg-[#3a3c3c]"
@@ -157,7 +158,7 @@ export default function Step3Analysis() {
               <h3 className="text-sm font-bold text-[#000000] mb-2">E. Output Gate</h3>
               <div className="text-xs text-[#5e5e5e] mb-3">
                 {state.branchType === "general"
-                  ? "일반채는 공통 분석 결과를 바로 Step 4로 전달합니다."
+                  ? "일반채는 공통 분석 결과를 바로 Stage 4로 전달합니다."
                   : "후순위채 / 영구채는 공통 분석 결과를 브랜치 분석 화면으로 전달합니다."}
               </div>
               <div className="grid grid-cols-2 gap-3 text-xs">
@@ -165,7 +166,7 @@ export default function Step3Analysis() {
                   공통 분석 완료: <span className="font-bold text-[#000000]">{state.commonAnalysisReady ? "YES" : "NO"}</span>
                 </div>
                 <div className="border border-[#e2e2e2] bg-[#ffffff] px-3 py-2">
-                  다음 대상: <span className="font-bold text-[#000000]">{state.branchType === "general" ? "Step 4" : branchLabel}</span>
+                  다음 대상: <span className="font-bold text-[#000000]">{state.branchType === "general" ? "Stage 4" : branchLabel}</span>
                 </div>
               </div>
             </div>
@@ -173,7 +174,7 @@ export default function Step3Analysis() {
         </div>
 
         <div className="flex items-center justify-between pt-4 mt-6 border-t border-[#c6c6c6]">
-          <Link href="/step2">
+          <Link href={STAGE_ROUTE_MAP[2]}>
             <button className="px-5 py-2.5 border border-[#777777] text-sm font-bold text-[#5e5e5e] hover:bg-[#f3f3f3] transition-colors">
               ← 이전: 업로드/분류
             </button>

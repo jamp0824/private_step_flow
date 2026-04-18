@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { WorkflowProvider } from "./contexts/WorkflowContext";
 import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
 import Step2Upload from "./pages/Step2Upload";
 import Step3Analysis from "./pages/Step3Analysis";
 import Step3B from "./pages/Step3B";
@@ -17,14 +18,15 @@ import Step6Approval from "./pages/Step6Approval";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
-      <Route path="/step2" component={Step2Upload} />
-      <Route path="/step3" component={Step3Analysis} />
-      <Route path="/step3b" component={Step3B} />
-      <Route path="/step3c" component={Step3C} />
-      <Route path="/step4" component={Step4Review} />
-      <Route path="/step5" component={Step5Report} />
-      <Route path="/step6" component={Step6Approval} />
+      <Route path="/" component={Home} />
+      <Route path="/stage1" component={Dashboard} />
+      <Route path="/stage2" component={Step2Upload} />
+      <Route path="/stage3" component={Step3Analysis} />
+      <Route path="/stage3/subordinated" component={Step3B} />
+      <Route path="/stage3/perpetual" component={Step3C} />
+      <Route path="/stage4" component={Step4Review} />
+      <Route path="/stage5" component={Step5Report} />
+      <Route path="/stage6" component={Step6Approval} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

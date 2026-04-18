@@ -5,7 +5,7 @@ import { useLocation } from "wouter";
 export default function Home() {
   const [, setLocation] = useLocation();
   useEffect(() => {
-    setLocation("/");
+    setLocation("/stage1");
   }, []);
   return null;
 }

@@ -7,6 +7,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
+import { getStageRoute, STAGE_LABELS } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 
 interface NavItem {
@@ -19,44 +20,33 @@ interface NavItem {
 interface AppShellProps {
   children: React.ReactNode;
   caseId?: string;
-  currentStep?: number;
-  totalSteps?: number;
-  stepLabels?: string[];
+  currentStage?: number;
+  stageLabels?: string[];
   rightPanel?: React.ReactNode;
   showRightPanel?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "대시보드", icon: "dashboard", href: "/" },
-  { label: "채권 검토", icon: "analytics", href: "/step2" },
+  { label: "대시보드", icon: "dashboard", href: "/stage1" },
+  { label: "채권 검토", icon: "analytics", href: "/stage2" },
   { label: "포트폴리오", icon: "folder_open", href: "#" },
   { label: "규제 준수", icon: "gavel", href: "#" },
   { label: "보고서", icon: "description", href: "#" },
 ];
 
-const STEP_LABELS = ["준비", "업로드/분류", "기본 분석", "구조 분석", "종합 판단", "보고서 생성", "최종 승인"];
+const DEFAULT_STAGE_LABELS = Object.values(STAGE_LABELS);
 
 export default function AppShell({
   children,
   caseId = "2024-BOND-082",
-  currentStep = 1,
-  stepLabels = STEP_LABELS,
+  currentStage = 1,
+  stageLabels = DEFAULT_STAGE_LABELS,
   rightPanel,
   showRightPanel = true,
 }: AppShellProps) {
   const [location] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const { state } = useWorkflow();
-
-  const stepRoutes: Record<number, string> = {
-    1: "/",
-    2: "/step2",
-    3: "/step3",
-    4: state.branchType === "subordinated" ? "/step3b" : state.branchType === "perpetual" ? "/step3c" : "/step3",
-    5: "/step4",
-    6: "/step5",
-    7: "/step6",
-  };
 
   const handlePlaceholderClick = () => {
     toast.info("준비 중인 기능입니다.");
@@ -129,10 +119,10 @@ export default function AppShell({
               <span className="text-[#777777]">#</span>
               <span className="font-bold text-[#000000]">사건번호: {caseId}</span>
             </div>
-            {currentStep > 0 && (
+            {currentStage > 0 && (
               <div className="flex items-center gap-1 text-xs text-[#5e5e5e]">
                 <span className="material-symbols-outlined text-[14px]">play_circle</span>
-                <span className="font-medium">진행단계: {stepLabels[currentStep - 1] || `Step ${currentStep}`}</span>
+                <span className="font-medium">진행단계: {stageLabels[currentStage - 1] || `Stage ${currentStage}`}</span>
               </div>
             )}
           </div>
@@ -159,15 +149,15 @@ export default function AppShell({
         </header>
 
         {/* Step Progress Bar */}
-        {currentStep > 0 && (
+        {currentStage > 0 && (
           <div className="flex-shrink-0 flex items-center px-6 py-2.5 border-b border-[#c6c6c6] bg-[#f9f9f9] overflow-x-auto">
-            {stepLabels.map((label, idx) => {
-              const stepNum = idx + 1;
-              const isActive = stepNum === currentStep;
-              const isComplete = stepNum < currentStep;
-              const route = stepRoutes[stepNum];
+            {stageLabels.map((label, idx) => {
+              const stageNum = idx + 1;
+              const isActive = stageNum === currentStage;
+              const isComplete = stageNum < currentStage;
+              const route = getStageRoute(stageNum as 1 | 2 | 3 | 4 | 5 | 6 | 7, state.branchType);
               return (
-                <div key={stepNum} className="flex items-center flex-shrink-0">
+                <div key={stageNum} className="flex items-center flex-shrink-0">
                   {route && isComplete ? (
                     <Link href={route}>
                       <div
@@ -179,7 +169,7 @@ export default function AppShell({
                             : "bg-[#f9f9f9] text-[#777777] border border-[#c6c6c6]"
                         }`}
                       >
-                        <span className="font-black">{String(stepNum).padStart(2, "0")}</span>
+                        <span className="font-black">{String(stageNum).padStart(2, "0")}</span>
                         <span>{label}</span>
                       </div>
                     </Link>
@@ -193,11 +183,11 @@ export default function AppShell({
                           : "bg-[#f9f9f9] text-[#777777] border border-[#c6c6c6]"
                       }`}
                     >
-                      <span className="font-black">{String(stepNum).padStart(2, "0")}</span>
+                      <span className="font-black">{String(stageNum).padStart(2, "0")}</span>
                       <span>{label}</span>
                     </div>
                   )}
-                  {idx < stepLabels.length - 1 && (
+                  {idx < stageLabels.length - 1 && (
                     <div className="w-8 h-px bg-[#c6c6c6] mx-1 flex-shrink-0" />
                   )}
                 </div>

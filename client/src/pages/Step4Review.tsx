@@ -7,6 +7,7 @@ import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
+import { getBranchStageRoute, STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 
 const RISK_METRICS = [
@@ -60,23 +61,23 @@ export default function Step4Review() {
 
   const handleMoveNext = () => {
     if (canAdvanceFromStep4) {
-      navigate("/step5");
+      navigate(STAGE_ROUTE_MAP[5]);
       return;
     }
 
     if (state.decisionStatus === "supplement_requested") {
-      navigate("/step2");
+      navigate(STAGE_ROUTE_MAP[2]);
       return;
     }
 
-    toast.error("확정 또는 수정 확정 상태에서만 Step 5로 이동할 수 있습니다.");
+    toast.error("확정 또는 수정 확정 상태에서만 Stage 5로 이동할 수 있습니다.");
   };
 
   return (
-    <AppShell currentStep={5} rightPanel={copilotPanel}>
+    <AppShell currentStage={4} rightPanel={copilotPanel}>
       <div className="p-8 max-w-5xl">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Step 4. Integrated Review / Human Confirm</div>
+          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Stage 4. Integrated Review / Human Confirm</div>
           <h1 className="text-3xl font-black text-[#000000] tracking-tight">종합 판단 및 사람 확인</h1>
           <p className="text-sm text-[#5e5e5e] mt-1.5 font-medium">공통 분석과 브랜치 분석을 병합하고 인간 판단으로 결과를 확정합니다.</p>
         </div>
@@ -106,7 +107,7 @@ export default function Step4Review() {
               <h2 className="text-sm font-bold text-[#000000] mb-3">A. Integrated Analysis</h2>
               <div className="space-y-3 text-xs text-[#1a1c1c]">
                 <div className="border border-[#e2e2e2] p-3 bg-[#f9f9f9]">계약조건 전반은 시장 표준과 유사하나, 스프레드 및 구조 리스크가 추가 확인 대상입니다.</div>
-                <div className="border border-[#e2e2e2] p-3 bg-[#f9f9f9]">브랜치 특화 분석은 Step 4의 human confirm 없이는 최종 판단으로 취급되지 않습니다.</div>
+                <div className="border border-[#e2e2e2] p-3 bg-[#f9f9f9]">브랜치 특화 분석은 Stage 4의 human confirm 없이는 최종 판단으로 취급되지 않습니다.</div>
               </div>
             </div>
 
@@ -188,7 +189,7 @@ export default function Step4Review() {
         </div>
 
         <div className="flex items-center justify-between pt-6 mt-6 border-t border-[#c6c6c6]">
-          <Link href={state.branchType === "general" ? "/step3" : state.branchType === "subordinated" ? "/step3b" : "/step3c"}>
+          <Link href={state.branchType === "general" ? STAGE_ROUTE_MAP[3] : getBranchStageRoute(state.branchType)}>
             <button className="px-5 py-2.5 border border-[#777777] text-sm font-bold text-[#5e5e5e] hover:bg-[#f3f3f3] transition-colors">
               ← 이전: 구조 분석
             </button>

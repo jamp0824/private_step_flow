@@ -7,6 +7,7 @@ import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
+import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 
 export default function Step3C() {
@@ -23,18 +24,18 @@ export default function Step3C() {
           excerpt: "콜옵션, 스텝업, 이자지급 연기 조항이 모두 확인되었습니다.",
         },
       ]}
-      recommendation="인간 판단이 필요한 영구채 특화 포인트는 Step 4에서 확정하십시오."
+      recommendation="인간 판단이 필요한 영구채 특화 포인트는 Stage 4에서 확정하십시오."
       analysisLabel="브랜치 분석 갱신"
     />
   );
 
   return (
-    <AppShell currentStep={4} rightPanel={copilotPanel}>
+    <AppShell currentStage={3} rightPanel={copilotPanel}>
       <div className="p-8 max-w-4xl">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Step 3-C. Branch Analysis</div>
+          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Stage 3. Perpetual Branch Analysis</div>
           <h1 className="text-3xl font-black text-[#000000] tracking-tight">영구채 세부 분석</h1>
-          <p className="text-sm text-[#5e5e5e] mt-1.5">콜옵션, 스텝업, 이자지급 정지 구조를 정리하고 Step 4로 전달합니다.</p>
+          <p className="text-sm text-[#5e5e5e] mt-1.5">콜옵션, 스텝업, 이자지급 정지 구조를 정리하고 Stage 4로 전달합니다.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-5 mb-5">
@@ -93,7 +94,7 @@ export default function Step3C() {
           <div className="border border-[#c6c6c6] bg-[#ffffff] p-4">
             <h3 className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wide mb-3">ANALYSIS NOTE</h3>
             <div className="border border-[#e2e2e2] bg-[#f9f9f9] p-3 text-xs text-[#1a1c1c] leading-relaxed">
-              자본 인정 가능성은 높으나, 인간 판단이 필요한 포인트는 Step 4의 직접 판단 블록에서 확정해야 합니다.
+              자본 인정 가능성은 높으나, 인간 판단이 필요한 포인트는 Stage 4의 직접 판단 블록에서 확정해야 합니다.
             </div>
           </div>
         </div>
@@ -110,14 +111,14 @@ export default function Step3C() {
               자본 인정 여부와 이자지급 정지 영향은 human-only 판단이 필요합니다.
             </div>
             <div className="border border-[#e2e2e2] bg-[#ffffff] px-3 py-2">
-              <div className="font-bold text-[#000000] mb-1">Carry To Step 4</div>
+              <div className="font-bold text-[#000000] mb-1">Carry To Stage 4</div>
               자본성, 콜옵션 행사 기대, 이자지급 정지 가능성을 종합 판단으로 전달합니다.
             </div>
           </div>
           <button
             onClick={() => {
               markBranchAnalysisReady();
-              toast.success("영구채 브랜치 결과를 Step 4 전달 준비 상태로 표시했습니다.");
+              toast.success("영구채 브랜치 결과를 Stage 4 전달 준비 상태로 표시했습니다.");
             }}
             className={`mt-4 px-4 py-2 text-xs font-bold transition-colors ${
               state.branchAnalysisReady ? "border border-[#777777] text-[#000000]" : "bg-[#000000] text-[#ffffff] hover:bg-[#3a3c3c]"
@@ -128,19 +129,19 @@ export default function Step3C() {
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t border-[#c6c6c6]">
-          <Link href="/step3">
+          <Link href={STAGE_ROUTE_MAP[3]}>
             <button className="px-5 py-2.5 border border-[#777777] text-sm font-bold text-[#5e5e5e] hover:bg-[#f3f3f3] transition-colors">
-              ← 이전: 기본 분석
+              ← 이전: 공통 분석
             </button>
           </Link>
           <button
-            onClick={() => navigate("/step4")}
+            onClick={() => navigate(STAGE_ROUTE_MAP[4])}
             disabled={!state.branchAnalysisReady}
             className={`px-6 py-2.5 text-sm font-bold transition-colors ${
               state.branchAnalysisReady ? "bg-[#000000] text-[#ffffff] hover:bg-[#3a3c3c]" : "border border-[#c6c6c6] text-[#777777] cursor-not-allowed"
             }`}
           >
-            다음 단계: 종합 판단 →
+            다음 단계: Stage 4 →
           </button>
         </div>
       </div>

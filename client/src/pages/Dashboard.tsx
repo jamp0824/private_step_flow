@@ -6,12 +6,13 @@
 import { Link } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
+import { getStageRoute } from "@/config/stages";
 
 const CASES = [
-  { id: "2024-BOND-082", issuer: "㈜테크파트너스", type: "일반사채", amount: "500억", step: 4, stepLabel: "구조 분석/판단", status: "진행중", risk: "HIGH" },
-  { id: "2024-BOND-079", issuer: "㈜그린에너지", type: "후순위채", amount: "300억", step: 2, stepLabel: "업로드/분류", status: "진행중", risk: "MODERATE" },
-  { id: "2024-BOND-075", issuer: "㈜메디컬코어", type: "영구채", amount: "200억", step: 6, stepLabel: "보고서 생성", status: "검토중", risk: "LOW" },
-  { id: "2024-BOND-071", issuer: "㈜스마트로지스", type: "일반사채", amount: "150억", step: 7, stepLabel: "최종 승인", status: "완료", risk: "LOW" },
+  { id: "DEMO-BOND-082", issuer: "프로젝트 오메가", type: "일반사채", amount: "124억", stage: 4, stageLabel: "종합 판단", status: "진행중", risk: "HIGH" },
+  { id: "DEMO-BOND-079", issuer: "스튜디오 라인", type: "후순위채", amount: "86억", stage: 3, stageLabel: "브랜치 분석", status: "진행중", risk: "MODERATE" },
+  { id: "DEMO-BOND-075", issuer: "시그널 워크스", type: "영구채", amount: "92억", stage: 5, stageLabel: "보고서 작성", status: "검토중", risk: "LOW" },
+  { id: "DEMO-BOND-071", issuer: "노스 필드", type: "일반사채", amount: "68억", stage: 7, stageLabel: "모니터링", status: "완료", risk: "LOW" },
 ];
 
 const STATS = [
@@ -35,7 +36,7 @@ function getStatusBadge(status: string) {
 
 export default function Dashboard() {
   return (
-    <AppShell currentStep={0} showRightPanel={false}>
+    <AppShell currentStage={0} showRightPanel={false}>
       <div className="p-8 max-w-6xl mx-auto">
         {/* Page Header */}
         <div className="mb-8">
@@ -60,7 +61,7 @@ export default function Dashboard() {
             <div className="text-sm font-bold text-[#ffffff]">새 채권 심사 시작</div>
             <div className="text-xs text-[#c6c6c6] mt-0.5">새로운 사모사채 투자 건을 접수하고 AI 보조 심사를 시작합니다.</div>
           </div>
-          <Link href="/step2">
+          <Link href="/stage2">
             <button className="px-5 py-2.5 bg-[#ffffff] text-[#000000] text-sm font-bold hover:bg-[#e2e2e2] transition-colors flex-shrink-0">
               심사 시작 →
             </button>
@@ -98,32 +99,14 @@ export default function Dashboard() {
                     <td className="px-4 py-3 text-sm font-bold text-[#000000]">{c.amount}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-[#5e5e5e]">Step {c.step}</span>
-                        <span className="text-[10px] text-[#777777]">{c.stepLabel}</span>
+                        <span className="text-[10px] font-bold text-[#5e5e5e]">Stage {c.stage}</span>
+                        <span className="text-[10px] text-[#777777]">{c.stageLabel}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3">{getRiskBadge(c.risk)}</td>
                     <td className="px-4 py-3">{getStatusBadge(c.status)}</td>
                     <td className="px-4 py-3">
-                      <Link
-                        href={
-                          c.step === 2
-                            ? "/step2"
-                            : c.step === 3
-                            ? "/step3"
-                            : c.step === 4
-                            ? c.type === "후순위채"
-                              ? "/step3b"
-                              : c.type === "영구채"
-                              ? "/step3c"
-                              : "/step3"
-                            : c.step === 5
-                            ? "/step4"
-                            : c.step === 6
-                            ? "/step5"
-                            : "/step6"
-                        }
-                      >
+                      <Link href={getStageRoute(c.stage as 1 | 2 | 3 | 4 | 5 | 6 | 7, c.type === "후순위채" ? "subordinated" : c.type === "영구채" ? "perpetual" : "general")}>
                         <button className="px-3 py-1 text-[10px] font-bold border border-[#777777] hover:bg-[#000000] hover:text-[#ffffff] hover:border-[#000000] transition-colors">
                           검토 계속
                         </button>

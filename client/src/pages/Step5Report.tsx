@@ -2,11 +2,12 @@ import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
+import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 
 const SUPPORTING_BASIS = [
   { label: "종합 판단 결과", value: "확정 완료" },
-  { label: "브랜치 분석 메모", value: "Step 4에 병합됨" },
+  { label: "브랜치 분석 메모", value: "Stage 4에 병합됨" },
   { label: "조건부 승인 요건", value: "2건 남음" },
 ];
 
@@ -39,14 +40,14 @@ export default function Step5Report() {
   const handleSubmit = () => {
     submitForApproval();
     toast.success("제출 준비가 완료되어 승인 단계로 이동합니다.");
-    navigate("/step6");
+    navigate(STAGE_ROUTE_MAP[6]);
   };
 
   return (
-    <AppShell currentStep={6} rightPanel={copilotPanel}>
+    <AppShell currentStage={5} rightPanel={copilotPanel}>
       <div className="p-8 max-w-4xl">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Step 5. 보고서 작성 및 제출</div>
+          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Stage 5. 보고서 작성 및 제출</div>
           <h1 className="text-3xl font-black text-[#000000] tracking-tight">보고서 패키징 및 제출 준비</h1>
           <p className="text-sm text-[#5e5e5e] mt-1.5 font-medium">
             확정된 판단 결과를 심사보고서로 정리하고 승인 제출 가능 여부를 확인합니다.
@@ -117,7 +118,7 @@ export default function Step5Report() {
               </div>
               <div className="border border-[#c6c6c6] bg-[#f9f9f9] p-3 text-xs text-[#3a3c3c] leading-relaxed">
                 본 건은 {state.branchType === "general" ? "일반 사모사채" : state.branchType === "subordinated" ? "후순위채" : "영구채"}로 분류되었으며,
-                Step 4의 확정 판단을 기준으로 보고서 초안이 구성되었습니다. 핵심 리스크, 조건부 승인 요건, 사후 관리 기준이 반영되어 있습니다.
+                Stage 4의 확정 판단을 기준으로 보고서 초안이 구성되었습니다. 핵심 리스크, 조건부 승인 요건, 사후 관리 기준이 반영되어 있습니다.
               </div>
             </div>
 
@@ -151,7 +152,7 @@ export default function Step5Report() {
         </div>
 
         <div className="flex items-center justify-between pt-6 mt-6 border-t border-[#c6c6c6]">
-          <Link href="/step4">
+          <Link href={STAGE_ROUTE_MAP[4]}>
             <button className="px-5 py-2.5 border border-[#777777] text-sm font-bold text-[#5e5e5e] hover:bg-[#f3f3f3] transition-colors">
               ← 이전: 종합 판단
             </button>

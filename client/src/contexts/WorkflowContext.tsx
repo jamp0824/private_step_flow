@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { getBranchStageRoute } from "@/config/stages";
 
 export type BranchType = "general" | "subordinated" | "perpetual";
 export type ReviewStatus = "draft" | "submitted" | "under_review" | "approved" | "rejected" | "returned";
@@ -119,8 +120,7 @@ export function WorkflowProvider({ children }: { children: React.ReactNode }) {
       state.branchLocked &&
       state.supplementStatus === "resolved";
 
-    const branchRoute =
-      state.branchType === "subordinated" ? "/step3b" : state.branchType === "perpetual" ? "/step3c" : "/step4";
+    const branchRoute = getBranchStageRoute(state.branchType);
 
     const canAdvanceFromStep3 =
       state.commonAnalysisReady && (state.branchType === "general" || state.branchAnalysisReady);

@@ -7,6 +7,7 @@ import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
+import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { type BranchType, useWorkflow } from "@/contexts/WorkflowContext";
 
 const BASE_DOCS = [
@@ -45,7 +46,7 @@ function StatusBadge({ tone, label }: { tone: "dark" | "light" | "warn" | "error
 
 function getSupplementCopy(status: string) {
   if (status === "required") return "누락 자료가 감지되었습니다. 보완 요청이 필요합니다.";
-  if (status === "requested") return "보완 요청이 발송되었습니다. 제출자 응답 전까지 Step 2가 차단됩니다.";
+  if (status === "requested") return "보완 요청이 발송되었습니다. 제출자 응답 전까지 현재 단계가 차단됩니다.";
   if (status === "waiting") return "제출자 응답 대기 중입니다.";
   if (status === "reuploaded") return "보완 자료가 재업로드되었습니다. 재점검을 진행하십시오.";
   if (status === "rechecking") return "재업로드 문서를 기준으로 재파싱 / 재체크 중입니다.";
@@ -68,7 +69,7 @@ export default function Step2Upload() {
   const copilotPanel = (
     <AICopilotPanel
       title="AI 코파일럿"
-      subtitle="Step 2 검토 지원"
+      subtitle="Stage 2 검토 지원"
       systemSuggestion="누락 자료와 파싱 오류를 모두 해소한 뒤 구조 분기를 확정해야 다음 단계로 이동할 수 있습니다."
       citations={[]}
       analysisLabel="초기 점검 재실행"
@@ -82,14 +83,14 @@ export default function Step2Upload() {
       return;
     }
 
-    navigate("/step3");
+    navigate(STAGE_ROUTE_MAP[3]);
   };
 
   return (
-    <AppShell currentStep={2} rightPanel={copilotPanel}>
+    <AppShell currentStage={2} rightPanel={copilotPanel}>
       <div className="p-8 max-w-5xl">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Step 2. Intake / Upload / Initial Check</div>
+          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Stage 2. Intake / Upload / Initial Check</div>
           <h1 className="text-3xl font-black text-[#000000] tracking-tight">기초 준비 및 1차 검토</h1>
           <p className="text-sm text-[#5e5e5e] mt-1.5 font-medium">세션 시작, 기본 문서 검증, 보완 루프, 비교 검토, 구조 확정을 한 화면에서 단계적으로 처리합니다.</p>
         </div>
@@ -279,7 +280,7 @@ export default function Step2Upload() {
 
         <section className="mb-6 border border-[#777777] bg-[#f3f3f3] p-5">
           <h2 className="text-sm font-bold text-[#000000] mb-1">E. Structure Lock</h2>
-          <p className="text-xs text-[#5e5e5e] mb-4">Step 2의 구조 분류 결과를 바탕으로 단일 브랜치를 확정합니다.</p>
+          <p className="text-xs text-[#5e5e5e] mb-4">현재 단계의 구조 분류 결과를 바탕으로 단일 브랜치를 확정합니다.</p>
           <div className="grid grid-cols-3 gap-3 mb-4">
             {BRANCH_OPTIONS.map((option) => (
               <button
@@ -299,7 +300,7 @@ export default function Step2Upload() {
             <button
               onClick={() => {
                 lockBranch();
-                toast.success("구조 분기가 Step 2 결과로 확정되었습니다.");
+                toast.success("구조 분기가 현재 단계 결과로 확정되었습니다.");
               }}
               className={`px-5 py-2.5 text-sm font-bold transition-colors ${
                 state.branchLocked ? "border border-[#777777] text-[#000000]" : "bg-[#000000] text-[#ffffff] hover:bg-[#3a3c3c]"
@@ -333,16 +334,16 @@ export default function Step2Upload() {
             <div>
               <div className="text-xs font-bold text-[#000000] mb-2">Next Transition</div>
               <div className="text-xs text-[#5e5e5e] leading-relaxed">
-                {canProceedFromStep2 ? "Step 3 공통 분석으로 이동할 수 있습니다." : "Step 3로 이동하기 전에 모든 차단 항목을 해소해야 합니다."}
+                {canProceedFromStep2 ? "Stage 3 분석으로 이동할 수 있습니다." : "Stage 3로 이동하기 전에 모든 차단 항목을 해소해야 합니다."}
               </div>
             </div>
           </div>
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t border-[#c6c6c6]">
-          <Link href="/">
+          <Link href={STAGE_ROUTE_MAP[1]}>
             <button className="px-5 py-2.5 border border-[#777777] text-sm font-bold text-[#5e5e5e] hover:bg-[#f3f3f3] transition-colors">
-              ← 대시보드
+              ← 이전: 접수
             </button>
           </Link>
           <button
@@ -351,7 +352,7 @@ export default function Step2Upload() {
               canProceedFromStep2 ? "bg-[#000000] text-[#ffffff] hover:bg-[#3a3c3c]" : "border border-[#c6c6c6] text-[#777777] cursor-not-allowed"
             }`}
           >
-            다음 단계: 기본 분석 →
+            다음 단계: Stage 3 →
           </button>
         </div>
       </div>
