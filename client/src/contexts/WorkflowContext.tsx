@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getBranchStageRoute } from "@/config/stages";
+import { canAdvanceFromStep3, canAdvanceFromStep4, deriveStageState, getNextSupplementStatus } from "@/lib/workflow";
 
 export type BranchType = "general" | "subordinated" | "perpetual";
 export type ReviewStatus = "draft" | "submitted" | "under_review" | "approved" | "rejected" | "returned";
@@ -7,7 +8,7 @@ export type SupplementStatus = "none" | "required" | "requested" | "waiting" | "
 export type StageState = "idle" | "loading" | "processing" | "blocked" | "ready" | "error";
 export type DecisionStatus = "pending" | "confirmed" | "modified" | "rejected" | "supplement_requested";
 
-interface WorkflowState {
+export interface WorkflowState {
   branchType: BranchType;
   branchLocked: boolean;
   reviewStatus: ReviewStatus;
@@ -73,31 +74,6 @@ const DEFAULT_STATE: WorkflowState = {
 
 const WorkflowContext = createContext<WorkflowContextType | undefined>(undefined);
 
-function getNextSupplementStatus(status: SupplementStatus): SupplementStatus {
-  const cycle: Record<SupplementStatus, SupplementStatus> = {
-    none: "required",
-    required: "requested",
-    requested: "waiting",
-    waiting: "reuploaded",
-    reuploaded: "rechecking",
-    rechecking: "resolved",
-    resolved: "resolved",
-  };
-
-  return cycle[status];
-}
-
-function deriveStageState(state: WorkflowState): StageState {
-  if (!state.sessionStarted) return "idle";
-  if (!state.parseErrorResolved) return "error";
-  if (state.supplementStatus === "requested" || state.supplementStatus === "waiting") return "blocked";
-  if (state.supplementStatus === "rechecking") return "processing";
-  if (!state.comparisonReviewed || !state.branchLocked) return "blocked";
-  if (state.reviewStatus === "submitted" || state.reviewStatus === "under_review") return "processing";
-  if (state.reviewStatus === "returned") return "blocked";
-  return "ready";
-}
-
 export function WorkflowProvider({ children, caseId }: { children: React.ReactNode; caseId: string }) {
   const [state, setState] = useState<WorkflowState>(() => {
     if (typeof window === "undefined") return DEFAULT_STATE;
@@ -127,11 +103,8 @@ export function WorkflowProvider({ children, caseId }: { children: React.ReactNo
 
     const branchRoute = getBranchStageRoute(state.branchType);
 
-    const canAdvanceFromStep3 =
-      state.commonAnalysisReady && (state.branchType === "general" || state.branchAnalysisReady);
-
-    const canAdvanceFromStep4 =
-      (state.decisionStatus === "confirmed" || state.decisionStatus === "modified") && state.supplementStatus === "resolved";
+    const canAdvanceFromStep3Result = canAdvanceFromStep3(state);
+    const canAdvanceFromStep4Result = canAdvanceFromStep4(state);
 
     const canSubmitFromStep5 =
       state.reviewStatus === "draft" || state.reviewStatus === "returned";
@@ -186,8 +159,8 @@ export function WorkflowProvider({ children, caseId }: { children: React.ReactNo
       },
       canProceedFromStep2,
       branchRoute,
-      canAdvanceFromStep3,
-      canAdvanceFromStep4,
+      canAdvanceFromStep3: canAdvanceFromStep3Result,
+      canAdvanceFromStep4: canAdvanceFromStep4Result,
       canSubmitFromStep5,
     };
   }, [caseId, state]);
