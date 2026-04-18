@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { DemoCaseProvider, useDemoCase } from "./contexts/DemoCaseContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { WorkflowProvider } from "./contexts/WorkflowContext";
 import Dashboard from "./pages/Dashboard";
@@ -35,16 +36,26 @@ function Router() {
   );
 }
 
+function AppContent() {
+  const { activeCaseId } = useDemoCase();
+
+  return (
+    <WorkflowProvider key={activeCaseId} caseId={activeCaseId}>
+      <TooltipProvider>
+        <Toaster />
+        <Router />
+      </TooltipProvider>
+    </WorkflowProvider>
+  );
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
-        <WorkflowProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
-        </WorkflowProvider>
+        <DemoCaseProvider>
+          <AppContent />
+        </DemoCaseProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

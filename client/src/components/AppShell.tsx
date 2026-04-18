@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import { getStageRoute, STAGE_LABELS } from "@/config/stages";
+import { useDemoCase } from "@/contexts/DemoCaseContext";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 
 interface NavItem {
@@ -38,7 +39,7 @@ const DEFAULT_STAGE_LABELS = Object.values(STAGE_LABELS);
 
 export default function AppShell({
   children,
-  caseId = "2024-BOND-082",
+  caseId,
   currentStage = 1,
   stageLabels = DEFAULT_STAGE_LABELS,
   rightPanel,
@@ -46,7 +47,9 @@ export default function AppShell({
 }: AppShellProps) {
   const [location] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const { activeCaseId } = useDemoCase();
   const { state } = useWorkflow();
+  const displayCaseId = caseId || activeCaseId;
 
   const handlePlaceholderClick = () => {
     toast.info("준비 중인 기능입니다.");
@@ -117,7 +120,7 @@ export default function AppShell({
             <span className="text-base font-bold text-[#000000]">채권 검토 시스템</span>
             <div className="flex items-center gap-1.5 text-xs font-medium text-[#5e5e5e]">
               <span className="text-[#777777]">#</span>
-              <span className="font-bold text-[#000000]">사건번호: {caseId}</span>
+              <span className="font-bold text-[#000000]">사건번호: {displayCaseId}</span>
             </div>
             {currentStage > 0 && (
               <div className="flex items-center gap-1 text-xs text-[#5e5e5e]">

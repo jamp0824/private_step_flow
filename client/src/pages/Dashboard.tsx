@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import AppShell from "@/components/AppShell";
 import { getStageRoute } from "@/config/stages";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
+import { useDemoCase } from "@/contexts/DemoCaseContext";
 import { useWorkflow } from "@/contexts/WorkflowContext";
 
 const CASES = [
@@ -38,6 +39,7 @@ function getStatusBadge(status: string) {
 
 export default function Dashboard() {
   const [, navigate] = useLocation();
+  const { setActiveCaseId } = useDemoCase();
   const { resetWorkflow } = useWorkflow();
 
   return (
@@ -128,7 +130,10 @@ export default function Dashboard() {
                     <td className="px-4 py-3">{getStatusBadge(c.status)}</td>
                     <td className="px-4 py-3">
                       <Link href={getStageRoute(c.stage as 1 | 2 | 3 | 4 | 5 | 6 | 7, c.type === "후순위채" ? "subordinated" : c.type === "영구채" ? "perpetual" : "general")}>
-                        <button className="px-3 py-1 text-[10px] font-bold border border-[#777777] hover:bg-[#000000] hover:text-[#ffffff] hover:border-[#000000] transition-colors">
+                        <button
+                          onClick={() => setActiveCaseId(c.id)}
+                          className="px-3 py-1 text-[10px] font-bold border border-[#777777] hover:bg-[#000000] hover:text-[#ffffff] hover:border-[#000000] transition-colors"
+                        >
                           검토 계속
                         </button>
                       </Link>

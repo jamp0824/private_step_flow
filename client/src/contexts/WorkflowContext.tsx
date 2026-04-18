@@ -51,6 +51,10 @@ interface WorkflowContextType {
 
 export const WORKFLOW_STORAGE_KEY = "bond-review-workflow-v2";
 
+function getWorkflowStorageKey(caseId: string) {
+  return `${WORKFLOW_STORAGE_KEY}:${caseId}`;
+}
+
 const DEFAULT_STATE: WorkflowState = {
   branchType: "general",
   branchLocked: false,
@@ -94,11 +98,11 @@ function deriveStageState(state: WorkflowState): StageState {
   return "ready";
 }
 
-export function WorkflowProvider({ children }: { children: React.ReactNode }) {
+export function WorkflowProvider({ children, caseId }: { children: React.ReactNode; caseId: string }) {
   const [state, setState] = useState<WorkflowState>(() => {
     if (typeof window === "undefined") return DEFAULT_STATE;
 
-    const stored = window.localStorage.getItem(WORKFLOW_STORAGE_KEY);
+    const stored = window.localStorage.getItem(getWorkflowStorageKey(caseId));
     if (!stored) return DEFAULT_STATE;
 
     try {
@@ -110,8 +114,8 @@ export function WorkflowProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const nextState = { ...state, stageState: deriveStageState(state) };
-    window.localStorage.setItem(WORKFLOW_STORAGE_KEY, JSON.stringify(nextState));
-  }, [state]);
+    window.localStorage.setItem(getWorkflowStorageKey(caseId), JSON.stringify(nextState));
+  }, [caseId, state]);
 
   const value = useMemo<WorkflowContextType>(() => {
     const canProceedFromStep2 =
@@ -177,7 +181,7 @@ export function WorkflowProvider({ children }: { children: React.ReactNode }) {
         })),
       setApproverComment: (value) => setState((prev) => ({ ...prev, approverComment: value })),
       resetWorkflow: () => {
-        window.localStorage.removeItem(WORKFLOW_STORAGE_KEY);
+        window.localStorage.removeItem(getWorkflowStorageKey(caseId));
         setState(DEFAULT_STATE);
       },
       canProceedFromStep2,
@@ -186,7 +190,7 @@ export function WorkflowProvider({ children }: { children: React.ReactNode }) {
       canAdvanceFromStep4,
       canSubmitFromStep5,
     };
-  }, [state]);
+  }, [caseId, state]);
 
   return <WorkflowContext.Provider value={value}>{children}</WorkflowContext.Provider>;
 }
