@@ -4,6 +4,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 function getApprovalLabel(status: string) {
   if (status === "approved") return "APPROVED";
@@ -18,18 +19,7 @@ export default function Step6Approval() {
   const { state, setApproverComment, approveCase, rejectCase, returnForRework } = useWorkflow();
 
   const copilotPanel = (
-    <AICopilotPanel
-      title="AI 코파일럿"
-      subtitle="승인 단계 지원"
-      citations={[
-        {
-          title: "승인 패키지 점검",
-          excerpt: "종합 판단, 보고서 초안, 조건부 승인 항목이 모두 포함되었습니다.",
-        },
-      ]}
-      recommendation="반려 또는 재작업 요청 시 코멘트를 남겨 Stage 5로 명확히 되돌리십시오."
-      analysisLabel="승인 패키지 검토"
-    />
+    <AICopilotPanel scenario={getAICopilotScenario(6, state.branchType)} />
   );
 
   const effectiveStatus = state.reviewStatus === "submitted" ? "under_review" : state.reviewStatus;

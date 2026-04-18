@@ -9,6 +9,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { type BranchType, useWorkflow } from "@/contexts/WorkflowContext";
+import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 const BASE_DOCS = [
   { name: "투자검토요청서_v1.pdf", upload: "완료", parse: "완료", classify: "요청서", error: "-", parseStatus: "done" },
@@ -67,14 +68,7 @@ export default function Step2Upload() {
   } = useWorkflow();
 
   const copilotPanel = (
-    <AICopilotPanel
-      title="AI 코파일럿"
-      subtitle="Stage 2 검토 지원"
-      systemSuggestion="누락 자료와 파싱 오류를 모두 해소한 뒤 구조 분기를 확정해야 다음 단계로 이동할 수 있습니다."
-      citations={[]}
-      analysisLabel="초기 점검 재실행"
-      extraActions={[]}
-    />
+    <AICopilotPanel scenario={getAICopilotScenario(2, state.branchType)} />
   );
 
   const handleProceed = () => {

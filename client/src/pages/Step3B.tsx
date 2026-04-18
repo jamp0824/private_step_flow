@@ -9,25 +9,14 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 export default function Step3B() {
   const [, navigate] = useLocation();
   const { state, markBranchAnalysisReady } = useWorkflow();
 
   const copilotPanel = (
-    <AICopilotPanel
-      title="AI 코파일럿"
-      subtitle="후순위채 구조 분석"
-      citations={[
-        {
-          title: "후순위 약정서",
-          excerpt: "선순위 채무 상환 완료 후 후순위 상환이 가능한 구조가 명시되어 있습니다.",
-        },
-      ]}
-      recommendation="후순위 구조 리스크를 Stage 4에서 종합 판단할 수 있도록 핵심 메모를 이 단계에서 정리하십시오."
-      analysisLabel="브랜치 분석 갱신"
-      extraActions={[{ label: "회수 순위 재검토" }]}
-    />
+    <AICopilotPanel scenario={getAICopilotScenario(3, "subordinated")} />
   );
 
   return (

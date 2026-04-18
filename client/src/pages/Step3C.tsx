@@ -9,24 +9,14 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 export default function Step3C() {
   const [, navigate] = useLocation();
   const { state, markBranchAnalysisReady } = useWorkflow();
 
   const copilotPanel = (
-    <AICopilotPanel
-      title="AI 코파일럿"
-      subtitle="영구채 구조 분석"
-      citations={[
-        {
-          title: "영구채 약정서",
-          excerpt: "콜옵션, 스텝업, 이자지급 연기 조항이 모두 확인되었습니다.",
-        },
-      ]}
-      recommendation="인간 판단이 필요한 영구채 특화 포인트는 Stage 4에서 확정하십시오."
-      analysisLabel="브랜치 분석 갱신"
-    />
+    <AICopilotPanel scenario={getAICopilotScenario(3, "perpetual")} />
   );
 
   return (

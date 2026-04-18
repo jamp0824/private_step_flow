@@ -9,6 +9,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 const ANALYSIS_ITEMS = [
   { label: "재무 분석", icon: "bar_chart", status: "완료", done: true },
@@ -32,26 +33,7 @@ export default function Step3Analysis() {
   const { state, branchRoute, markCommonAnalysisReady, canAdvanceFromStep3 } = useWorkflow();
 
   const copilotPanel = (
-    <AICopilotPanel
-      title="AI 코파일럿"
-      subtitle="실시간 분석 지원"
-      citations={[
-        {
-          title: "재무 분석 요약",
-          excerpt: "영업활동 현금흐름은 양(+)이지만 단기 차입금 증가 추세가 확인됩니다.",
-        },
-        {
-          title: "외부 검색 후보",
-          excerpt: "최근 신용등급 변동 기사 및 유사 심사사례를 참조 근거로 선택할 수 있습니다.",
-        },
-      ]}
-      recommendation="공통 분석 완료 후 잠긴 브랜치에 따라 Stage 3 분기 또는 Stage 4로 이동하십시오."
-      analysisLabel="분석 갱신"
-      extraActions={[
-        { label: "유사 사례 검색" },
-        { label: "외부 정보 수집" },
-      ]}
-    />
+    <AICopilotPanel scenario={getAICopilotScenario(3, state.branchType)} />
   );
 
   const branchLabel = state.branchType === "general" ? "일반채" : state.branchType === "subordinated" ? "후순위채" : "영구채";

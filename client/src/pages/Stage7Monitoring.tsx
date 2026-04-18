@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import AppShell from "@/components/AppShell";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
+import { useWorkflow } from "@/contexts/WorkflowContext";
+import { getAICopilotScenario } from "@/mocks/aiCopilot";
 import { STAGE7_MONITORING_MOCK } from "@/mocks/stage7Monitoring";
 
 function getToneClass(tone: "stable" | "watch" | "risk") {
@@ -24,27 +26,11 @@ function getStatusBadge(status: "ON TRACK" | "WATCH" | "BREACH RISK") {
 }
 
 export default function Stage7Monitoring() {
+  const { state } = useWorkflow();
   const { summary, covenantTracker, financialSignals, alerts, reminders } = STAGE7_MONITORING_MOCK;
 
   const copilotPanel = (
-    <AICopilotPanel
-      title="AI 코파일럿"
-      subtitle="사후관리 읽기 전용 지원"
-      citations={[
-        {
-          title: "모니터링 요약",
-          excerpt: "보고 지연, 레버리지 경계, 현금전환률 저하가 동시에 관찰되어 watchlist 유지가 권고됩니다.",
-        },
-      ]}
-      recommendation="운영 조치 자동화는 Phase 2 범위이며, 현재 데모에서는 읽기 전용 모니터링과 추천 메모만 제공합니다."
-      analysisLabel="모니터링 요약 갱신"
-      extraActions={[
-        {
-          label: "리마인더 초안 보기",
-          onClick: () => toast.info("Phase 2: reminder composer"),
-        },
-      ]}
-    />
+    <AICopilotPanel scenario={getAICopilotScenario(7, state.branchType)} />
   );
 
   return (

@@ -9,6 +9,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { getBranchStageRoute, STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 const RISK_METRICS = [
   { label: "신용 리스크", level: "HIGH", value: "BB+", desc: "부정적 전망 가능성" },
@@ -33,22 +34,7 @@ export default function Step4Review() {
   } = useWorkflow();
 
   const copilotPanel = (
-    <AICopilotPanel
-      title="AI 코파일럿"
-      subtitle="종합 판단 지원"
-      citations={[
-        {
-          title: "통합 분석 결과",
-          excerpt: "브랜치 특이사항과 공통 분석 결과를 종합해 리스크 요약표를 생성했습니다.",
-        },
-      ]}
-      recommendation="이 단계에서만 확정, 수정 확정, 거절, 보완 요청을 수행하십시오."
-      analysisLabel="리스크 집계 갱신"
-      extraActions={[
-        { label: "메모 갱신" },
-        { label: "조건 변경 기록" },
-      ]}
-    />
+    <AICopilotPanel scenario={getAICopilotScenario(4, state.branchType)} />
   );
 
   const branchLabel = state.branchType === "general" ? "일반채" : state.branchType === "subordinated" ? "후순위채" : "영구채";

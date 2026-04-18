@@ -7,6 +7,7 @@ import AppShell from "@/components/AppShell";
 import AICopilotPanel from "@/components/AICopilotPanel";
 import { STAGE_ROUTE_MAP } from "@/config/stages";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { getAICopilotScenario } from "@/mocks/aiCopilot";
 
 interface ReportSectionState {
   id: string;
@@ -82,19 +83,7 @@ export default function Step5Report() {
   }, [sections]);
 
   const copilotPanel = (
-    <AICopilotPanel
-      title="AI 코파일럿"
-      subtitle="보고서 작성 지원"
-      citations={[
-        {
-          title: "보고서 초안 제안",
-          excerpt: "종합 판단 결과와 사후관리 조건을 섹션별 초안으로 정리했습니다.",
-        },
-      ]}
-      recommendation="섹션별 AI 초안을 검토한 뒤 근거 미연결 배지를 우선 해소하십시오."
-      analysisLabel="초안 재생성"
-      extraActions={[{ label: "요약 문단 갱신" }]}
-    />
+    <AICopilotPanel scenario={getAICopilotScenario(5, state.branchType)} />
   );
 
   const handleSectionChange = (sectionId: string, text: string) => {

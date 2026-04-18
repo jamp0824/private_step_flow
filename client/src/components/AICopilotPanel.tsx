@@ -3,43 +3,49 @@
  * Right panel: Evidence citations, recommendations, analysis actions
  */
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-
-interface EvidenceCitation {
-  title: string;
-  excerpt: string;
-  highlight?: string;
-}
+import type { AICopilotScenario } from "@/mocks/aiCopilot";
 
 interface AICopilotPanelProps {
-  title?: string;
-  subtitle?: string;
-  citations?: EvidenceCitation[];
-  recommendation?: string;
-  systemSuggestion?: string;
+  scenario: AICopilotScenario;
   onAnalyze?: () => void;
-  analysisLabel?: string;
-  extraActions?: { label: string; onClick?: () => void }[];
 }
 
 export default function AICopilotPanel({
-  title = "AI 코파일럿",
-  subtitle = "검토 지원 도구",
-  citations = [],
-  recommendation,
-  systemSuggestion,
+  scenario,
   onAnalyze,
-  analysisLabel = "분석 요청",
-  extraActions = [],
 }: AICopilotPanelProps) {
   const [chatInput, setChatInput] = useState("");
+  const [chatMessages, setChatMessages] = useState<Array<{ role: "user" | "assistant"; text: string }>>([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleChat = () => {
-    if (chatInput.trim()) {
-      toast.info("AI 분석 요청이 접수되었습니다.");
-      setChatInput("");
-    }
+    const message = chatInput.trim();
+
+    if (!message) return;
+
+    setChatMessages((prev) => [...prev, { role: "user", text: message }]);
+    setChatInput("");
+    setIsTyping(true);
+
+    const replyIndex = chatMessages.filter((item) => item.role === "assistant").length % scenario.chatReplies.length;
+    const delay = 300 + Math.floor(Math.random() * 501);
+
+    // TODO(phase-2): replace with /v1/analysis/jobs
+    timeoutRef.current = window.setTimeout(() => {
+      setChatMessages((prev) => [...prev, { role: "assistant", text: scenario.chatReplies[replyIndex] }]);
+      setIsTyping(false);
+    }, delay);
   };
 
   return (
@@ -49,17 +55,18 @@ export default function AICopilotPanel({
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-[18px] text-[#000000]">smart_toy</span>
           <div>
-            <div className="text-sm font-black text-[#000000] tracking-tight">{title}</div>
-            <div className="text-[10px] text-[#5e5e5e] font-medium">{subtitle}</div>
+            <div className="text-sm font-black text-[#000000] tracking-tight">{scenario.title}</div>
+            <div className="text-[10px] text-[#5e5e5e] font-medium">{scenario.subtitle}</div>
           </div>
         </div>
+        <div className="mt-2 text-[10px] font-mono text-[#777777]">triggerApi: {scenario.triggerApi}</div>
       </div>
 
       {/* System Suggestion */}
-      {systemSuggestion && (
+      {scenario.systemSuggestion && (
         <div className="mx-3 mt-3 border border-[#000000] bg-[#f3f3f3] p-3">
           <div className="text-[10px] font-bold text-[#5e5e5e] uppercase tracking-wider mb-1.5">시스템 분석 제안</div>
-          <p className="text-xs text-[#1a1c1c] leading-relaxed">{systemSuggestion}</p>
+          <p className="text-xs text-[#1a1c1c] leading-relaxed">{scenario.systemSuggestion}</p>
           <div className="flex gap-2 mt-2.5">
             <button
               onClick={() => toast.success("템플릿이 생성되었습니다.")}
@@ -78,13 +85,13 @@ export default function AICopilotPanel({
       )}
 
       {/* Evidence Citations */}
-      {citations.length > 0 && (
+      {scenario.citations.length > 0 && (
         <div className="px-3 py-3 flex-1 overflow-y-auto">
           <div className="text-[10px] font-bold text-[#5e5e5e] uppercase tracking-wider mb-2">
             근거 인용 (EVIDENCE CITATIONS)
           </div>
           <div className="space-y-2">
-            {citations.map((citation, idx) => (
+            {scenario.citations.map((citation, idx) => (
               <div key={idx} className="border border-[#c6c6c6] bg-[#ffffff] p-3">
                 <div className="text-xs font-bold text-[#000000] mb-1">{citation.title}</div>
                 <p className="text-[11px] text-[#3a3c3c] leading-relaxed">{citation.excerpt}</p>
@@ -98,10 +105,33 @@ export default function AICopilotPanel({
       )}
 
       {/* AI Recommendation */}
-      {recommendation && (
+      {scenario.recommendation && (
         <div className="mx-3 mb-3 border-l-2 border-[#000000] pl-3 py-2 bg-[#f9f9f9]">
           <div className="text-[10px] font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">AI 권고</div>
-          <p className="text-xs text-[#1a1c1c] leading-relaxed">{recommendation}</p>
+          <p className="text-xs text-[#1a1c1c] leading-relaxed">{scenario.recommendation}</p>
+        </div>
+      )}
+
+      {(chatMessages.length > 0 || isTyping) && (
+        <div className="mx-3 mb-3 space-y-2">
+          {chatMessages.slice(-4).map((message, index) => (
+            <div
+              key={`${message.role}-${index}`}
+              className={`border px-3 py-2 text-[11px] ${
+                message.role === "assistant"
+                  ? "border-[#777777] bg-[#ffffff] text-[#1a1c1c]"
+                  : "border-[#000000] bg-[#000000] text-[#ffffff]"
+              }`}
+            >
+              <div className="text-[9px] font-bold uppercase mb-1 opacity-70">{message.role === "assistant" ? "AI" : "USER"}</div>
+              <div>{message.text}</div>
+            </div>
+          ))}
+          {isTyping && (
+            <div className="border border-[#777777] bg-[#f3f3f3] px-3 py-2 text-[11px] text-[#5e5e5e] animate-pulse">
+              AI가 응답을 작성 중입니다...
+            </div>
+          )}
         </div>
       )}
 
@@ -114,14 +144,14 @@ export default function AICopilotPanel({
           onClick={onAnalyze || (() => toast.info("분석을 시작합니다."))}
           className="w-full py-2.5 bg-[#000000] text-[#ffffff] text-sm font-bold hover:bg-[#3a3c3c] transition-colors"
         >
-          {analysisLabel}
+          {scenario.analysisLabel}
         </button>
-        {extraActions.length > 0 && (
+        {scenario.extraActions && scenario.extraActions.length > 0 && (
           <div className="flex gap-2">
-            {extraActions.map((action, idx) => (
+            {scenario.extraActions.map((action, idx) => (
               <button
                 key={idx}
-                onClick={action.onClick || (() => toast.info("준비 중인 기능입니다."))}
+                onClick={() => toast.info(action.phase2Message || "준비 중인 기능입니다.")}
                 className="flex-1 py-2 border border-[#777777] text-xs font-bold text-[#000000] hover:bg-[#000000] hover:text-[#ffffff] transition-colors"
               >
                 {action.label}
@@ -157,9 +187,7 @@ export default function AICopilotPanel({
           <span className="material-symbols-outlined text-[14px] text-[#5e5e5e]">help_outline</span>
           <span className="text-[10px] font-bold text-[#5e5e5e]">가이드</span>
         </div>
-        <p className="text-[10px] text-[#777777] leading-relaxed">
-          문서 업로드 후 파싱에러 발생 시, 원본 PDF의 텍스트 레이어 존재 여부를 확인하십시오.
-        </p>
+        <p className="text-[10px] text-[#777777] leading-relaxed">{scenario.guideText}</p>
       </div>
     </div>
   );
