@@ -1,6 +1,6 @@
 export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
-const OAUTH_STATE_STORAGE_KEY = "bond-review-oauth-state";
+const OAUTH_STATE_STORAGE_KEY = "ibk-approval-oauth-state";
 
 function generateOAuthNonce() {
   const bytes = new Uint8Array(16);

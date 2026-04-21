@@ -50,7 +50,7 @@ interface WorkflowContextType {
   canSubmitFromStep5: boolean;
 }
 
-export const WORKFLOW_STORAGE_KEY = "bond-review-workflow-v2";
+export const WORKFLOW_STORAGE_KEY = "ibk-approval-workflow-v1";
 
 function getWorkflowStorageKey(caseId: string) {
   return `${WORKFLOW_STORAGE_KEY}:${caseId}`;

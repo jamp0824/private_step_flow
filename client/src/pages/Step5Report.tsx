@@ -118,15 +118,15 @@ export default function Step5Report() {
     <AppShell currentStage={5} rightPanel={copilotPanel}>
       <div className="p-8 max-w-6xl mx-auto">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#5e5e5e] uppercase tracking-wider mb-1">Stage 5. 보고서 작성 및 제출</div>
-          <h1 className="text-3xl font-black text-[#000000] tracking-tight">보고서 패키징 및 제출 준비</h1>
-          <p className="text-sm text-[#5e5e5e] mt-1.5 font-medium">섹션별 본문을 편집하고 근거 연결 상태를 점검한 뒤 승인 제출 가능 여부를 확정합니다.</p>
+          <div className="text-xs font-bold text-[#4a6080] uppercase tracking-wider mb-1">Stage 5. 보고서 작성 및 제출</div>
+          <h1 className="text-3xl font-black text-[#004999] tracking-tight">보고서 패키징 및 제출 준비</h1>
+          <p className="text-sm text-[#4a6080] mt-1.5 font-medium">섹션별 본문을 편집하고 근거 연결 상태를 점검한 뒤 승인 제출 가능 여부를 확정합니다.</p>
         </div>
 
         {state.reviewStatus === "returned" && (
-          <div className="mb-6 border border-[#ba1a1a] bg-[#fff5f5] p-4">
-            <div className="text-sm font-bold text-[#ba1a1a]">재작업 요청 상태</div>
-            <div className="text-xs text-[#ba1a1a] mt-1 leading-relaxed">{state.approverComment || "승인자 코멘트를 반영한 뒤 다시 제출해야 합니다."}</div>
+          <div className="mb-6 border border-[#c0392b] bg-[#fff5f5] p-4">
+            <div className="text-sm font-bold text-[#c0392b]">재작업 요청 상태</div>
+            <div className="text-xs text-[#c0392b] mt-1 leading-relaxed">{state.approverComment || "승인자 코멘트를 반영한 뒤 다시 제출해야 합니다."}</div>
           </div>
         )}
 
@@ -136,7 +136,7 @@ export default function Step5Report() {
               <section key={section.id} className="bp-card">
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div>
-                    <h2 className="text-sm font-bold text-[#000000]">{section.title}</h2>
+                    <h2 className="text-sm font-bold text-[#004999]">{section.title}</h2>
                     <div className="flex items-center gap-2 mt-2 flex-wrap">
                       <span className="badge-active">{`Conf. ${section.confidence}%`}</span>
                       {section.missingEvidence.length > 0 ? (
@@ -155,7 +155,7 @@ export default function Step5Report() {
                   value={section.text}
                   onChange={(event) => handleSectionChange(section.id, event.target.value)}
                   rows={6}
-                  className="w-full border border-[#777777] bg-[#f9f9f9] p-3 text-xs text-[#1a1c1c] placeholder-[#777777] outline-none focus:border-[#000000] resize-y"
+                  className="w-full border border-[#6b8199] bg-[#f5f8fc] p-3 text-xs text-[#0d1b2a] placeholder-[#6b8199] outline-none focus:border-[#004999] resize-y"
                   placeholder="보고서 본문을 입력하세요..."
                 />
 
@@ -164,7 +164,7 @@ export default function Step5Report() {
                     <button
                       key={source}
                       onClick={handleSourceClick}
-                      className="px-2 py-1 border border-[#777777] text-[10px] font-bold text-[#000000] hover:bg-[#f3f3f3] transition-colors"
+                      className="px-2 py-1 border border-[#6b8199] text-[10px] font-bold text-[#004999] hover:bg-[#f0f5fa] transition-colors"
                     >
                       Source: [{source}]
                     </button>
@@ -172,7 +172,7 @@ export default function Step5Report() {
                 </div>
 
                 {section.missingEvidence.length > 0 && (
-                  <div className="mt-3 border border-[#ba1a1a] bg-[#fff5f5] p-3 text-[11px] text-[#ba1a1a]">
+                  <div className="mt-3 border border-[#c0392b] bg-[#fff5f5] p-3 text-[11px] text-[#c0392b]">
                     미연결 근거: {section.missingEvidence.join(" / ")}
                   </div>
                 )}
@@ -182,23 +182,23 @@ export default function Step5Report() {
 
           <aside className="space-y-5">
             <section className="bp-card">
-              <div className="text-[10px] font-bold text-[#5e5e5e] uppercase tracking-wide mb-2">Report Completeness</div>
-              <div className="text-3xl font-black text-[#000000]">{completenessScore}/100</div>
-              <div className="mt-3 h-3 border border-[#777777] bg-[#f3f3f3]">
-                <div className="h-full bg-[#000000]" style={{ width: `${completenessScore}%` }} />
+              <div className="text-[10px] font-bold text-[#4a6080] uppercase tracking-wide mb-2">Report Completeness</div>
+              <div className="text-3xl font-black text-[#004999]">{completenessScore}/100</div>
+              <div className="mt-3 h-3 border border-[#6b8199] bg-[#f0f5fa]">
+                <div className="h-full bg-[#004999]" style={{ width: `${completenessScore}%` }} />
               </div>
               <div className="mt-3 space-y-2">
                 {sections.map((section) => (
                   <div key={section.id} className="flex items-center justify-between text-[11px]">
-                    <span className="text-[#5e5e5e]">{section.title}</span>
-                    <span className={section.text.trim() ? "text-[#000000] font-bold" : "text-[#777777]"}>{section.text.trim() ? "READY" : "EMPTY"}</span>
+                    <span className="text-[#4a6080]">{section.title}</span>
+                    <span className={section.text.trim() ? "text-[#004999] font-bold" : "text-[#6b8199]"}>{section.text.trim() ? "READY" : "EMPTY"}</span>
                   </div>
                 ))}
               </div>
             </section>
 
             <section className="bp-card">
-              <div className="text-[10px] font-bold text-[#5e5e5e] uppercase tracking-wide mb-3">Submission Readiness</div>
+              <div className="text-[10px] font-bold text-[#4a6080] uppercase tracking-wide mb-3">Submission Readiness</div>
               <div className="space-y-2">
                 {[
                   { label: "종합 판단 확정", done: state.decisionStatus === "confirmed" || state.decisionStatus === "modified" },
@@ -206,40 +206,40 @@ export default function Step5Report() {
                   { label: "보고서 근거 링크 점검", done: sections.every((section) => section.missingEvidence.length === 0) },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-2">
-                    <div className={`w-4 h-4 flex items-center justify-center ${item.done ? "bg-[#000000]" : "border border-[#777777]"}`}>
+                    <div className={`w-4 h-4 flex items-center justify-center ${item.done ? "bg-[#004999]" : "border border-[#6b8199]"}`}>
                       {item.done && <span className="material-symbols-outlined text-[11px] text-[#ffffff]">check</span>}
                     </div>
-                    <span className={`text-xs ${item.done ? "text-[#000000] font-medium" : "text-[#777777]"}`}>{item.label}</span>
+                    <span className={`text-xs ${item.done ? "text-[#004999] font-medium" : "text-[#6b8199]"}`}>{item.label}</span>
                   </div>
                 ))}
               </div>
             </section>
 
             <section className="bp-card">
-              <div className="text-[10px] font-bold text-[#5e5e5e] uppercase tracking-wide mb-3">Unresolved Items</div>
+              <div className="text-[10px] font-bold text-[#4a6080] uppercase tracking-wide mb-3">Unresolved Items</div>
               <div className="space-y-2">
                 {unresolvedItems.length > 0 ? (
                   unresolvedItems.map((item) => (
-                    <div key={item} className="border border-[#ba1a1a] bg-[#fff5f5] px-3 py-2 text-xs text-[#ba1a1a]">
+                    <div key={item} className="border border-[#c0392b] bg-[#fff5f5] px-3 py-2 text-xs text-[#c0392b]">
                       {item}
                     </div>
                   ))
                 ) : (
-                  <div className="border border-[#c6c6c6] px-3 py-2 text-xs text-[#5e5e5e]">현재 제출을 막는 미해결 항목은 없습니다.</div>
+                  <div className="border border-[#b8c8d8] px-3 py-2 text-xs text-[#4a6080]">현재 제출을 막는 미해결 항목은 없습니다.</div>
                 )}
               </div>
             </section>
           </aside>
         </div>
 
-        <div className="flex items-center justify-between pt-6 mt-6 border-t border-[#c6c6c6]">
+        <div className="flex items-center justify-between pt-6 mt-6 border-t border-[#b8c8d8]">
           <Link href={STAGE_ROUTE_MAP[4]}>
             <button className="btn-secondary">← 이전: 종합 판단</button>
           </Link>
           <button
             onClick={handleSubmit}
             disabled={!canSubmitFromStep5}
-            className={canSubmitFromStep5 ? "btn-primary" : "px-4 py-2 border border-[#c6c6c6] text-sm font-bold text-[#777777] cursor-not-allowed"}
+            className={canSubmitFromStep5 ? "btn-primary" : "px-4 py-2 border border-[#b8c8d8] text-sm font-bold text-[#6b8199] cursor-not-allowed"}
           >
             승인 단계로 제출 →
           </button>

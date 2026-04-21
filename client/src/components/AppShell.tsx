@@ -1,7 +1,7 @@
 /*
- * DESIGN: Structural Brutalism — AppShell
+ * DESIGN: IBK시스템 — 승인심사 AI 플랫폼
  * 3-panel layout: Left Nav (240px) + Main Workspace + Right AI Copilot (288px)
- * Sharp edges, 1px borders, monochrome palette
+ * Sharp edges, 1px borders, IBK Deep Blue palette
  */
 
 import { useState } from "react";
@@ -29,7 +29,7 @@ interface AppShellProps {
 
 const NAV_ITEMS: NavItem[] = [
   { label: "대시보드", icon: "dashboard", href: "/stage1" },
-  { label: "채권 검토", icon: "analytics", href: "/stage2" },
+  { label: "승인심사", icon: "analytics", href: "/stage2" },
   { label: "포트폴리오", icon: "folder_open", href: "#" },
   { label: "규제 준수", icon: "gavel", href: "#" },
   { label: "보고서", icon: "description", href: "#" },
@@ -56,13 +56,13 @@ export default function AppShell({
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#f9f9f9] text-[#1a1c1c]" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="flex h-screen w-full overflow-hidden bg-[#f5f8fc] text-[#0d1b2a]" style={{ fontFamily: "'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif" }}>
       {/* ── LEFT SIDEBAR ── */}
-      <nav className="w-60 flex-shrink-0 flex flex-col border-r border-[#777777] bg-[#f9f9f9] z-20">
+      <nav className="w-60 flex-shrink-0 flex flex-col border-r border-[#6b8199] bg-[#f5f8fc] z-20">
         {/* Brand */}
-        <div className="px-6 py-5 border-b border-[#777777]">
-          <div className="text-xl font-black tracking-tighter text-[#000000]">BOND REVIEW</div>
-          <div className="text-[10px] font-bold text-[#5e5e5e] mt-0.5 uppercase tracking-widest">v1.2.0</div>
+        <div className="px-6 py-5 border-b border-[#6b8199]">
+          <div className="text-xl font-black tracking-tighter text-[#004999]">IBK시스템</div>
+          <div className="text-[10px] font-bold text-[#4a6080] mt-0.5 uppercase tracking-widest">승인심사 AI</div>
         </div>
 
         {/* Navigation */}
@@ -76,7 +76,7 @@ export default function AppShell({
                 {isPlaceholder ? (
                   <button
                     onClick={handlePlaceholderClick}
-                    className="w-full flex items-center px-6 py-3 text-[#5e5e5e] hover:bg-[#000000] hover:text-[#ffffff] transition-colors duration-100 text-sm font-medium"
+                    className="w-full flex items-center px-6 py-3 text-[#4a6080] hover:bg-[#004999] hover:text-[#ffffff] transition-colors duration-100 text-sm font-medium"
                   >
                     <span className="material-symbols-outlined mr-4 text-[20px]">{item.icon}</span>
                     {item.label}
@@ -86,8 +86,8 @@ export default function AppShell({
                     <div
                       className={
                         isActive
-                          ? "flex items-center px-6 py-3 text-[#000000] font-bold border-l-4 border-[#000000] bg-[#e2e2e2] text-sm cursor-pointer"
-                          : "flex items-center px-6 py-3 text-[#5e5e5e] hover:bg-[#000000] hover:text-[#ffffff] transition-colors duration-100 text-sm font-medium cursor-pointer"
+                          ? "flex items-center px-6 py-3 text-[#004999] font-bold border-l-4 border-[#004999] bg-[#dce8f0] text-sm cursor-pointer"
+                          : "flex items-center px-6 py-3 text-[#4a6080] hover:bg-[#004999] hover:text-[#ffffff] transition-colors duration-100 text-sm font-medium cursor-pointer"
                       }
                     >
                       <span className={`material-symbols-outlined mr-4 text-[20px] ${isActive ? "" : ""}`}>{item.icon}</span>
@@ -101,10 +101,10 @@ export default function AppShell({
         </div>
 
         {/* Settings */}
-        <div className="border-t border-[#777777] p-4">
+        <div className="border-t border-[#6b8199] p-4">
           <button
             onClick={handlePlaceholderClick}
-            className="flex items-center px-2 py-2 text-[#5e5e5e] hover:text-[#000000] transition-colors text-sm font-medium w-full"
+            className="flex items-center px-2 py-2 text-[#4a6080] hover:text-[#004999] transition-colors text-sm font-medium w-full"
           >
             <span className="material-symbols-outlined mr-3 text-[18px]">settings</span>
             설정
@@ -115,37 +115,37 @@ export default function AppShell({
       {/* ── MAIN CONTENT AREA ── */}
       <div className="flex-1 flex flex-col min-w-0 h-screen">
         {/* Top Header */}
-        <header className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-[#777777] bg-[#ffffff] z-10">
+        <header className="flex-shrink-0 h-14 flex items-center justify-between px-6 border-b border-[#6b8199] bg-[#ffffff] z-10">
           <div className="flex items-center gap-6">
-            <span className="text-base font-bold text-[#000000]">채권 검토 시스템</span>
-            <div className="flex items-center gap-1.5 text-xs font-medium text-[#5e5e5e]">
-              <span className="text-[#777777]">#</span>
-              <span className="font-bold text-[#000000]">사건번호: {displayCaseId}</span>
+            <span className="text-base font-bold text-[#004999]">승인심사 AI 플랫폼</span>
+            <div className="flex items-center gap-1.5 text-xs font-medium text-[#4a6080]">
+              <span className="text-[#6b8199]">#</span>
+              <span className="font-bold text-[#004999]">사건번호: {displayCaseId}</span>
             </div>
             {currentStage > 0 && (
-              <div className="flex items-center gap-1 text-xs text-[#5e5e5e]">
+              <div className="flex items-center gap-1 text-xs text-[#4a6080]">
                 <span className="material-symbols-outlined text-[14px]">play_circle</span>
                 <span className="font-medium">진행단계: {stageLabels[currentStage - 1] || `Stage ${currentStage}`}</span>
               </div>
             )}
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center border border-[#c6c6c6] bg-[#ffffff]">
+            <div className="flex items-center border border-[#b8c8d8] bg-[#ffffff]">
               <input
                 type="text"
                 placeholder="검색..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="px-3 py-1.5 text-xs outline-none bg-transparent w-44 text-[#1a1c1c] placeholder-[#777777]"
+                className="px-3 py-1.5 text-xs outline-none bg-transparent w-44 text-[#0d1b2a] placeholder-[#6b8199]"
               />
-              <button className="px-2 py-1.5 text-[#5e5e5e] hover:text-[#000000]">
+              <button className="px-2 py-1.5 text-[#4a6080] hover:text-[#004999]">
                 <span className="material-symbols-outlined text-[16px]">search</span>
               </button>
             </div>
-            <button onClick={handlePlaceholderClick} className="p-1.5 text-[#5e5e5e] hover:text-[#000000] transition-colors">
+            <button onClick={handlePlaceholderClick} className="p-1.5 text-[#4a6080] hover:text-[#004999] transition-colors">
               <span className="material-symbols-outlined text-[20px]">notifications</span>
             </button>
-            <button onClick={handlePlaceholderClick} className="p-1.5 text-[#5e5e5e] hover:text-[#000000] transition-colors">
+            <button onClick={handlePlaceholderClick} className="p-1.5 text-[#4a6080] hover:text-[#004999] transition-colors">
               <span className="material-symbols-outlined text-[20px]">account_circle</span>
             </button>
           </div>
@@ -153,7 +153,7 @@ export default function AppShell({
 
         {/* Step Progress Bar */}
         {currentStage > 0 && (
-          <div className="flex-shrink-0 flex items-center px-6 py-2.5 border-b border-[#c6c6c6] bg-[#f9f9f9] overflow-x-auto">
+          <div className="flex-shrink-0 flex items-center px-6 py-2.5 border-b border-[#b8c8d8] bg-[#f5f8fc] overflow-x-auto">
             {stageLabels.map((label, idx) => {
               const stageNum = idx + 1;
               const isActive = stageNum === currentStage;
@@ -166,10 +166,10 @@ export default function AppShell({
                       <div
                         className={`flex items-center gap-1.5 px-3 py-1 text-xs font-bold cursor-pointer ${
                           isActive
-                            ? "bg-[#000000] text-[#ffffff]"
+                            ? "bg-[#004999] text-[#ffffff]"
                             : isComplete
-                            ? "bg-[#e2e2e2] text-[#000000] border border-[#777777] hover:bg-[#000000] hover:text-[#ffffff] transition-colors"
-                            : "bg-[#f9f9f9] text-[#777777] border border-[#c6c6c6]"
+                            ? "bg-[#dce8f0] text-[#004999] border border-[#6b8199] hover:bg-[#004999] hover:text-[#ffffff] transition-colors"
+                            : "bg-[#f5f8fc] text-[#6b8199] border border-[#b8c8d8]"
                         }`}
                       >
                         <span className="font-black">{String(stageNum).padStart(2, "0")}</span>
@@ -180,10 +180,10 @@ export default function AppShell({
                     <div
                       className={`flex items-center gap-1.5 px-3 py-1 text-xs font-bold ${
                         isActive
-                          ? "bg-[#000000] text-[#ffffff]"
+                          ? "bg-[#004999] text-[#ffffff]"
                           : isComplete
-                          ? "bg-[#e2e2e2] text-[#000000] border border-[#777777]"
-                          : "bg-[#f9f9f9] text-[#777777] border border-[#c6c6c6]"
+                          ? "bg-[#dce8f0] text-[#004999] border border-[#6b8199]"
+                          : "bg-[#f5f8fc] text-[#6b8199] border border-[#b8c8d8]"
                       }`}
                     >
                       <span className="font-black">{String(stageNum).padStart(2, "0")}</span>
@@ -191,7 +191,7 @@ export default function AppShell({
                     </div>
                   )}
                   {idx < stageLabels.length - 1 && (
-                    <div className="w-8 h-px bg-[#c6c6c6] mx-1 flex-shrink-0" />
+                    <div className="w-8 h-px bg-[#b8c8d8] mx-1 flex-shrink-0" />
                   )}
                 </div>
               );
@@ -202,25 +202,25 @@ export default function AppShell({
         {/* Content + Right Panel */}
         <div className="flex-1 flex min-h-0">
           {/* Main Workspace */}
-          <main className="flex-1 overflow-y-auto bg-[#f9f9f9]">
+          <main className="flex-1 overflow-y-auto bg-[#f5f8fc]">
             {children}
           </main>
 
           {/* Right AI Copilot Panel */}
           {showRightPanel && rightPanel && (
-            <aside className="w-72 flex-shrink-0 border-l border-[#777777] bg-[#f9f9f9] flex flex-col overflow-y-auto">
+            <aside className="w-72 flex-shrink-0 border-l border-[#6b8199] bg-[#f5f8fc] flex flex-col overflow-y-auto">
               {rightPanel}
             </aside>
           )}
         </div>
 
         {/* Footer */}
-        <footer className="flex-shrink-0 h-8 flex items-center justify-between px-6 border-t border-[#c6c6c6] bg-[#f3f3f3] text-[10px] text-[#777777]">
-          <span>© 2024 채권 검토 시스템. 모든 권리 보유.</span>
+        <footer className="flex-shrink-0 h-8 flex items-center justify-between px-6 border-t border-[#b8c8d8] bg-[#f0f5fa] text-[10px] text-[#6b8199]">
+          <span>© 2024 IBK시스템. 승인심사 AI 플랫폼. All rights reserved.</span>
           <div className="flex items-center gap-4">
-            <button onClick={handlePlaceholderClick} className="hover:text-[#000000]">보안 가이드</button>
-            <button onClick={handlePlaceholderClick} className="hover:text-[#000000]">감사 로그</button>
-            <button onClick={handlePlaceholderClick} className="hover:text-[#000000]">지원</button>
+            <button onClick={handlePlaceholderClick} className="hover:text-[#004999]">보안 가이드</button>
+            <button onClick={handlePlaceholderClick} className="hover:text-[#004999]">감사 로그</button>
+            <button onClick={handlePlaceholderClick} className="hover:text-[#004999]">지원</button>
           </div>
         </footer>
       </div>
