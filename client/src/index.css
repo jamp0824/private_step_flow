@@ -1,10 +1,10 @@
 /* 
  * DESIGN SYSTEM: IBK시스템 — 승인심사 AI 플랫폼
- * Philosophy: Strip decoration, expose information architecture
- * Colors: IBK Deep Blue #004999 anchor, #f5f8fc canvas, #c0392b error only
- * Typography: Pretendard / Inter — weight contrast over color contrast
+ * Philosophy: Clean professional UI — white/light-gray base, IBK Blue as accent
+ * Colors: #ffffff / #f8f9fa base canvas, #004999 IBK Blue for accents only
+ * Typography: Pretendard / Inter
  * Borders: 1px sharp edges, 0px border-radius everywhere
- * Elevation: Tonal layering (no shadows, no blur)
+ * Elevation: Subtle tonal layering (no shadows, no blur)
  */
 
 @import "tailwindcss";
@@ -49,51 +49,63 @@
 }
 
 :root {
-  --surface-0: #f5f8fc;
-  --surface-1: #f0f5fa;
-  --surface-2: #dce8f0;
-  --surface-3: #c8daea;
-  --surface-dim: #b8c8d8;
-  --surface-white: #ffffff;
+  /* Surface palette — white/light-gray base */
+  --surface-0: #f8f9fa;        /* Page canvas */
+  --surface-1: #f3f4f6;        /* Sections / subtle bg */
+  --surface-2: #e5e7eb;        /* Cards / dividers */
+  --surface-3: #d1d5db;        /* Stronger dividers */
+  --surface-dim: #9ca3af;      /* Dim surface */
+  --surface-white: #ffffff;    /* Floating / card elements */
 
-  --ink-primary: #004999;
-  --ink-secondary: #0d1b2a;
-  --ink-tertiary: #1a3a5c;
-  --ink-muted: #4a6080;
-  --ink-subtle: #6b8199;
-  --ink-faint: #b8c8d8;
+  /* Ink palette — neutral dark text */
+  --ink-primary: #111827;      /* Headings / strong text */
+  --ink-secondary: #1f2937;    /* Body text */
+  --ink-tertiary: #374151;     /* Secondary text */
+  --ink-muted: #6b7280;        /* Muted / helper text */
+  --ink-subtle: #9ca3af;       /* Placeholder / outline */
+  --ink-faint: #d1d5db;        /* Faint borders */
 
+  /* Brand accent — IBK Blue (use sparingly) */
+  --brand: #004999;
+  --brand-hover: #003a7a;
+  --brand-light: #eff6ff;      /* Very light blue bg for badges/highlights */
+  --brand-mid: #dbeafe;        /* Light blue for active states */
+
+  /* Semantic */
   --error: #c0392b;
-  --error-bg: #fde8e8;
-  --warning-bg: #fff8e1;
+  --error-bg: #fef2f2;
+  --warning-bg: #fffbeb;
+  --success: #059669;
+  --success-bg: #ecfdf5;
 
+  /* Tailwind/shadcn compatibility */
   --radius: 0px;
-  --background: #f5f8fc;
-  --foreground: #0d1b2a;
+  --background: #f8f9fa;
+  --foreground: #111827;
   --card: #ffffff;
-  --card-foreground: #0d1b2a;
+  --card-foreground: #111827;
   --popover: #ffffff;
-  --popover-foreground: #0d1b2a;
+  --popover-foreground: #111827;
   --primary: #004999;
   --primary-foreground: #ffffff;
-  --secondary: #f0f5fa;
-  --secondary-foreground: #0d1b2a;
-  --muted: #f0f5fa;
-  --muted-foreground: #4a6080;
-  --accent: #dce8f0;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111827;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #eff6ff;
   --accent-foreground: #004999;
   --destructive: #c0392b;
   --destructive-foreground: #ffffff;
-  --border: #b8c8d8;
-  --input: #6b8199;
+  --border: #e5e7eb;
+  --input: #9ca3af;
   --ring: #004999;
-  --sidebar: #f5f8fc;
-  --sidebar-foreground: #0d1b2a;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #111827;
   --sidebar-primary: #004999;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #dce8f0;
+  --sidebar-accent: #eff6ff;
   --sidebar-accent-foreground: #004999;
-  --sidebar-border: #6b8199;
+  --sidebar-border: #e5e7eb;
   --sidebar-ring: #004999;
 }
 
@@ -112,7 +124,6 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Korean text optimization */
   :lang(ko) {
     word-break: keep-all;
     line-height: 1.6;
@@ -125,7 +136,6 @@
     cursor: pointer;
   }
 
-  /* Remove default focus outline, use custom */
   *:focus-visible {
     outline: 2px solid #004999;
     outline-offset: 0px;
@@ -147,43 +157,46 @@
     min-width: 0;
   }
 
-  /* IBK Badge System */
+  /* Badge System */
   .badge-complete {
-    @apply px-2 py-0.5 text-[10px] font-bold border border-[#6b8199] bg-[#dce8f0] text-[#004999];
+    @apply px-2 py-0.5 text-[10px] font-bold border border-[#d1d5db] bg-[#f3f4f6] text-[#374151];
   }
   .badge-active {
-    @apply px-2 py-0.5 text-[10px] font-bold border border-[#004999] bg-[#ffffff] text-[#004999];
+    @apply px-2 py-0.5 text-[10px] font-bold border border-[#bfdbfe] bg-[#eff6ff] text-[#004999];
   }
   .badge-error {
-    @apply px-2 py-0.5 text-[10px] font-bold border border-[#c0392b] bg-[#ffffff] text-[#c0392b];
+    @apply px-2 py-0.5 text-[10px] font-bold border border-[#fca5a5] bg-[#fef2f2] text-[#c0392b];
   }
   .badge-high {
     @apply px-2 py-0.5 text-[10px] font-bold bg-[#004999] text-[#ffffff];
   }
   .badge-moderate {
-    @apply px-2 py-0.5 text-[10px] font-bold border border-[#6b8199] bg-[#f0f5fa] text-[#004999];
+    @apply px-2 py-0.5 text-[10px] font-bold border border-[#d1d5db] bg-[#f3f4f6] text-[#374151];
   }
   .badge-low {
-    @apply px-2 py-0.5 text-[10px] font-bold border border-[#b8c8d8] bg-[#f5f8fc] text-[#4a6080];
+    @apply px-2 py-0.5 text-[10px] font-bold border border-[#e5e7eb] bg-[#f8f9fa] text-[#6b7280];
   }
 
-  /* IBK Button System */
+  /* Button System */
   .btn-primary {
-    @apply px-4 py-2 bg-[#004999] text-[#ffffff] text-sm font-bold border border-[#004999] hover:bg-[#003580] transition-colors duration-100;
+    @apply px-4 py-2 bg-[#004999] text-[#ffffff] text-sm font-bold border border-[#004999] hover:bg-[#003a7a] transition-colors duration-100;
   }
   .btn-secondary {
-    @apply px-4 py-2 bg-[#ffffff] text-[#004999] text-sm font-bold border border-[#004999] hover:bg-[#004999] hover:text-[#ffffff] transition-colors duration-100;
+    @apply px-4 py-2 bg-[#ffffff] text-[#004999] text-sm font-bold border border-[#004999] hover:bg-[#eff6ff] transition-colors duration-100;
   }
   .btn-ghost {
-    @apply px-4 py-2 text-[#4a6080] text-sm font-medium hover:text-[#004999] hover:bg-[#f0f5fa] transition-colors duration-100;
+    @apply px-4 py-2 text-[#6b7280] text-sm font-medium hover:text-[#111827] hover:bg-[#f3f4f6] transition-colors duration-100;
+  }
+  .btn-outline {
+    @apply px-4 py-2 bg-[#ffffff] text-[#374151] text-sm font-medium border border-[#d1d5db] hover:bg-[#f3f4f6] transition-colors duration-100;
   }
 
-  /* IBK Card */
+  /* Card */
   .bp-card {
-    @apply bg-[#ffffff] border border-[#b8c8d8] p-4;
+    @apply bg-[#ffffff] border border-[#e5e7eb] p-4;
   }
   .bp-card-section {
-    @apply bg-[#f0f5fa] border border-[#6b8199] p-5;
+    @apply bg-[#f3f4f6] border border-[#e5e7eb] p-5;
   }
 
   /* Status Indicators */
@@ -191,28 +204,28 @@
     @apply w-2 h-2 bg-[#004999] inline-block;
   }
   .status-dot-inactive {
-    @apply w-2 h-2 bg-[#b8c8d8] border border-[#6b8199] inline-block;
+    @apply w-2 h-2 bg-[#d1d5db] border border-[#9ca3af] inline-block;
   }
   .status-dot-error {
     @apply w-2 h-2 bg-[#c0392b] inline-block;
   }
 
-  /* Warning Banner */
+  /* Banners */
   .warning-banner {
-    @apply border border-[#c0392b] bg-[#fde8e8] p-4;
+    @apply border border-[#fca5a5] bg-[#fef2f2] p-4;
   }
   .info-banner {
-    @apply border border-[#6b8199] bg-[#f0f5fa] p-4;
+    @apply border border-[#e5e7eb] bg-[#f3f4f6] p-4;
   }
 
   /* Evidence Citation Block */
   .evidence-block {
-    @apply border-l-2 border-[#004999] pl-3 py-1 bg-[#f5f8fc];
+    @apply border-l-2 border-[#004999] pl-3 py-1 bg-[#f8f9fa];
   }
 
   /* Risk Metric Card */
   .risk-card {
-    @apply border border-[#b8c8d8] p-4 bg-[#ffffff];
+    @apply border border-[#e5e7eb] p-4 bg-[#ffffff];
   }
 
   /* Stepper */
@@ -220,40 +233,40 @@
     @apply bg-[#004999] text-[#ffffff] font-bold;
   }
   .step-complete {
-    @apply bg-[#dce8f0] text-[#004999] border border-[#6b8199];
+    @apply bg-[#eff6ff] text-[#004999] border border-[#bfdbfe];
   }
   .step-pending {
-    @apply bg-[#f5f8fc] text-[#6b8199] border border-[#b8c8d8];
+    @apply bg-[#ffffff] text-[#9ca3af] border border-[#e5e7eb];
   }
 
-  /* Table IBK Style */
+  /* Table Style */
   .bp-table {
     @apply w-full text-sm border-collapse;
   }
   .bp-table thead tr {
-    @apply bg-[#f0f5fa] border-b border-[#6b8199];
+    @apply bg-[#f8f9fa] border-b border-[#e5e7eb];
   }
   .bp-table thead th {
-    @apply px-4 py-2.5 text-left text-xs font-bold text-[#4a6080] uppercase tracking-wide;
+    @apply px-4 py-2.5 text-left text-xs font-bold text-[#6b7280] uppercase tracking-wide;
   }
   .bp-table tbody tr {
-    @apply border-b border-[#dce8f0] hover:bg-[#f5f8fc] transition-colors;
+    @apply border-b border-[#f3f4f6] hover:bg-[#f8f9fa] transition-colors;
   }
   .bp-table tbody td {
-    @apply px-4 py-3 text-sm text-[#0d1b2a];
+    @apply px-4 py-3 text-sm text-[#1f2937];
   }
 
   /* Sidebar Nav Item */
   .nav-item {
-    @apply flex items-center px-6 py-3 text-[#4a6080] hover:bg-[#004999] hover:text-[#ffffff] transition-colors duration-100 text-sm font-medium cursor-pointer;
+    @apply flex items-center px-4 py-2.5 text-[#374151] hover:bg-[#f3f4f6] hover:text-[#111827] transition-colors duration-100 text-sm font-medium cursor-pointer;
   }
   .nav-item-active {
-    @apply flex items-center px-6 py-3 text-[#004999] font-bold border-l-4 border-[#004999] bg-[#dce8f0] text-sm cursor-pointer;
+    @apply flex items-center px-4 py-2.5 text-[#004999] font-bold bg-[#eff6ff] text-sm cursor-pointer;
   }
 
   /* AI Copilot Panel */
   .copilot-panel {
-    @apply w-72 border-l border-[#6b8199] bg-[#f5f8fc] flex flex-col flex-shrink-0;
+    @apply w-72 border-l border-[#e5e7eb] bg-[#ffffff] flex flex-col flex-shrink-0;
   }
 
   /* Scrollbar styling */
@@ -262,12 +275,12 @@
     height: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #f0f5fa;
+    background: #f3f4f6;
   }
   ::-webkit-scrollbar-thumb {
-    background: #b8c8d8;
+    background: #d1d5db;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #6b8199;
+    background: #9ca3af;
   }
 }

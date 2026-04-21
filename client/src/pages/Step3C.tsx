@@ -37,50 +37,50 @@ export default function Step3C() {
     <AppShell currentStage={3} rightPanel={copilotPanel}>
       <div className="p-8 max-w-4xl">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#4a6080] uppercase tracking-wider mb-1">Stage 3. Perpetual Branch Analysis</div>
-          <h1 className="text-3xl font-black text-[#004999] tracking-tight">영구채 세부 분석</h1>
-          <p className="text-sm text-[#4a6080] mt-1.5">콜옵션, 스텝업, 이자지급 정지 구조를 정리하고 Stage 4로 전달합니다.</p>
+          <div className="text-xs font-bold text-[#6b7280] uppercase tracking-wider mb-1">Stage 3. Perpetual Branch Analysis</div>
+          <h1 className="text-3xl font-black text-[#111827] tracking-tight">영구채 세부 분석</h1>
+          <p className="text-sm text-[#6b7280] mt-1.5">콜옵션, 스텝업, 이자지급 정지 구조를 정리하고 Stage 4로 전달합니다.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-5 mb-5">
-          <div className="border border-[#b8c8d8] bg-[#ffffff] p-4">
-            <h3 className="text-xs font-bold text-[#4a6080] uppercase tracking-wide mb-3">CALL OPTION STRUCTURE</h3>
+          <div className="border border-[#e5e7eb] bg-[#ffffff] p-4">
+            <h3 className="text-xs font-bold text-[#6b7280] uppercase tracking-wide mb-3">CALL OPTION STRUCTURE</h3>
             <div className="space-y-3">
               <div>
-                <div className="text-[10px] font-bold text-[#4a6080] uppercase mb-1">행사 시점</div>
-                <div className="border border-[#6b8199] px-3 py-2 text-xs font-medium text-[#004999] bg-[#f5f8fc]">발행일로부터 5년 후 매 이자지급일</div>
+                <div className="text-[10px] font-bold text-[#6b7280] uppercase mb-1">행사 시점</div>
+                <div className="border border-[#e5e7eb] px-3 py-2 text-xs font-medium text-[#004999] bg-[#f8f9fa]">발행일로부터 5년 후 매 이자지급일</div>
               </div>
               <div>
-                <div className="text-[10px] font-bold text-[#4a6080] uppercase mb-1">조기상환 조건</div>
-                <div className="border border-[#6b8199] px-3 py-2 text-xs text-[#0d1b2a] bg-[#f5f8fc]">Tax Event, Accounting Event 발생 시 전액 상환 가능</div>
+                <div className="text-[10px] font-bold text-[#6b7280] uppercase mb-1">조기상환 조건</div>
+                <div className="border border-[#e5e7eb] px-3 py-2 text-xs text-[#111827] bg-[#f8f9fa]">Tax Event, Accounting Event 발생 시 전액 상환 가능</div>
               </div>
             </div>
           </div>
 
-          <div className="border border-[#b8c8d8] bg-[#ffffff] p-4">
-            <h3 className="text-xs font-bold text-[#4a6080] uppercase tracking-wide mb-3">STEP-UP REVIEW</h3>
+          <div className="border border-[#e5e7eb] bg-[#ffffff] p-4">
+            <h3 className="text-xs font-bold text-[#6b7280] uppercase tracking-wide mb-3">STEP-UP REVIEW</h3>
             <table className="w-full text-xs">
               <thead>
-                <tr className="border-b border-[#dce8f0]">
-                  <th className="py-1.5 text-left text-[10px] font-bold text-[#4a6080]">Trigger</th>
-                  <th className="py-1.5 text-right text-[10px] font-bold text-[#4a6080]">Hike</th>
+                <tr className="border-b border-[#e5e7eb]">
+                  <th className="py-1.5 text-left text-[10px] font-bold text-[#6b7280]">Trigger</th>
+                  <th className="py-1.5 text-right text-[10px] font-bold text-[#6b7280]">Hike</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-[#f0f5fa]">
-                  <td className="py-2 text-[#0d1b2a]">First Call Date</td>
+                <tr className="border-b border-[#f3f4f6]">
+                  <td className="py-2 text-[#111827]">First Call Date</td>
                   <td className="py-2 text-right font-bold text-[#004999]">+100 bps</td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-[#0d1b2a]">Rating Downgrade</td>
+                  <td className="py-2 text-[#111827]">Rating Downgrade</td>
                   <td className="py-2 text-right font-bold text-[#004999]">+50 bps</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <div className="border border-[#b8c8d8] bg-[#ffffff] p-4">
-            <h3 className="text-xs font-bold text-[#4a6080] uppercase tracking-wide mb-3">COUPON DEFERRAL RULES</h3>
+          <div className="border border-[#e5e7eb] bg-[#ffffff] p-4">
+            <h3 className="text-xs font-bold text-[#6b7280] uppercase tracking-wide mb-3">COUPON DEFERRAL RULES</h3>
             <div className="space-y-2.5">
               {[
                 { label: "배당금 지급 시 제한", value: "Dividend Stopper" },
@@ -88,33 +88,33 @@ export default function Step3C() {
                 { label: "스텝업 조건", value: "연 100bps 가산" },
               ].map((item) => (
                 <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-xs text-[#4a6080]">{item.label}</span>
-                  <span className="text-xs font-bold text-[#004999]">{item.value}</span>
+                  <span className="text-xs text-[#6b7280]">{item.label}</span>
+                  <span className="text-xs font-bold text-[#374151]">{item.value}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="border border-[#b8c8d8] bg-[#ffffff] p-4">
-            <h3 className="text-xs font-bold text-[#4a6080] uppercase tracking-wide mb-3">ANALYSIS NOTE</h3>
-            <div className="border border-[#dce8f0] bg-[#f5f8fc] p-3 text-xs text-[#0d1b2a] leading-relaxed">
+          <div className="border border-[#e5e7eb] bg-[#ffffff] p-4">
+            <h3 className="text-xs font-bold text-[#6b7280] uppercase tracking-wide mb-3">ANALYSIS NOTE</h3>
+            <div className="border border-[#e5e7eb] bg-[#f8f9fa] p-3 text-xs text-[#111827] leading-relaxed">
               자본 인정 가능성은 높으나, 인간 판단이 필요한 포인트는 Stage 4의 직접 판단 블록에서 확정해야 합니다.
             </div>
           </div>
         </div>
 
-        <div className="border border-[#6b8199] bg-[#f0f5fa] p-5 mb-5">
-          <h3 className="text-sm font-bold text-[#004999] mb-2">Branch Output Summary</h3>
+        <div className="border border-[#e5e7eb] bg-[#f3f4f6] p-5 mb-5">
+          <h3 className="text-sm font-semibold text-[#111827] mb-2">Branch Output Summary</h3>
           <div className="grid grid-cols-3 gap-4 text-xs">
-            <div className="border border-[#dce8f0] bg-[#ffffff] px-3 py-2">
+            <div className="border border-[#e5e7eb] bg-[#ffffff] px-3 py-2">
               <div className="font-bold text-[#004999] mb-1">Key Findings</div>
               콜옵션 행사 조건과 스텝업 트리거가 구조적으로 확인되었습니다.
             </div>
-            <div className="border border-[#dce8f0] bg-[#ffffff] px-3 py-2">
+            <div className="border border-[#e5e7eb] bg-[#ffffff] px-3 py-2">
               <div className="font-bold text-[#004999] mb-1">Open Issues</div>
               자본 인정 여부와 이자지급 정지 영향은 human-only 판단이 필요합니다.
             </div>
-            <div className="border border-[#dce8f0] bg-[#ffffff] px-3 py-2">
+            <div className="border border-[#e5e7eb] bg-[#ffffff] px-3 py-2">
               <div className="font-bold text-[#004999] mb-1">Carry To Stage 4</div>
               자본성, 콜옵션 행사 기대, 이자지급 정지 가능성을 종합 판단으로 전달합니다.
             </div>
@@ -125,16 +125,16 @@ export default function Step3C() {
               toast.success("영구채 브랜치 결과를 Stage 4 전달 준비 상태로 표시했습니다.");
             }}
             className={`mt-4 px-4 py-2 text-xs font-bold transition-colors ${
-              state.branchAnalysisReady ? "border border-[#6b8199] text-[#004999]" : "bg-[#004999] text-[#ffffff] hover:bg-[#1a3a5c]"
+              state.branchAnalysisReady ? "border border-[#e5e7eb] text-[#004999]" : "bg-[#004999] text-[#ffffff] hover:bg-[#003a7a]"
             }`}
           >
             {state.branchAnalysisReady ? "브랜치 출력 준비 완료" : "브랜치 출력 준비 완료 표시"}
           </button>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-[#b8c8d8]">
+        <div className="flex items-center justify-between pt-4 border-t border-[#e5e7eb]">
           <Link href={STAGE_ROUTE_MAP[3]}>
-            <button className="px-5 py-2.5 border border-[#6b8199] text-sm font-bold text-[#4a6080] hover:bg-[#f0f5fa] transition-colors">
+            <button className="px-5 py-2.5 border border-[#e5e7eb] text-sm font-bold text-[#6b7280] hover:bg-[#f3f4f6] transition-colors">
               ← 이전: 공통 분석
             </button>
           </Link>
@@ -142,7 +142,7 @@ export default function Step3C() {
             onClick={() => navigate(STAGE_ROUTE_MAP[4])}
             disabled={!state.branchAnalysisReady}
             className={`px-6 py-2.5 text-sm font-bold transition-colors ${
-              state.branchAnalysisReady ? "bg-[#004999] text-[#ffffff] hover:bg-[#1a3a5c]" : "border border-[#b8c8d8] text-[#6b8199] cursor-not-allowed"
+              state.branchAnalysisReady ? "bg-[#004999] text-[#ffffff] hover:bg-[#003a7a]" : "border border-[#e5e7eb] text-[#6b7280] cursor-not-allowed"
             }`}
           >
             다음 단계: Stage 4 →

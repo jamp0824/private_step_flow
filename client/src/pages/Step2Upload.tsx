@@ -40,7 +40,7 @@ function StatusBadge({ tone, label }: { tone: "dark" | "light" | "warn" | "error
       ? "border border-[#c0392b] bg-[#fff5f5] text-[#c0392b]"
       : tone === "error"
       ? "border border-[#c0392b] bg-[#ffffff] text-[#c0392b]"
-      : "border border-[#6b8199] bg-[#ffffff] text-[#004999]";
+      : "border border-[#e5e7eb] bg-[#ffffff] text-[#004999]";
 
   return <span className={`px-2 py-0.5 text-[10px] font-bold ${className}`}>{label}</span>;
 }
@@ -84,9 +84,9 @@ export default function Step2Upload() {
     <AppShell currentStage={2} rightPanel={copilotPanel}>
       <div className="p-8 max-w-5xl">
         <div className="mb-7">
-          <div className="text-xs font-bold text-[#4a6080] uppercase tracking-wider mb-1">Stage 2. Intake / Upload / Initial Check</div>
-          <h1 className="text-3xl font-black text-[#004999] tracking-tight">기초 준비 및 1차 검토</h1>
-          <p className="text-sm text-[#4a6080] mt-1.5 font-medium">세션 시작, 기본 문서 검증, 보완 루프, 비교 검토, 구조 확정을 한 화면에서 단계적으로 처리합니다.</p>
+          <div className="text-xs font-bold text-[#6b7280] uppercase tracking-wider mb-1">Stage 2. Intake / Upload / Initial Check</div>
+          <h1 className="text-3xl font-black text-[#111827] tracking-tight">기초 준비 및 1차 검토</h1>
+          <p className="text-sm text-[#6b7280] mt-1.5 font-medium">세션 시작, 기본 문서 검증, 보완 루프, 비교 검토, 구조 확정을 한 화면에서 단계적으로 처리합니다.</p>
         </div>
 
         <div className="grid grid-cols-4 gap-4 mb-6">
@@ -96,18 +96,18 @@ export default function Step2Upload() {
             { label: "Branch", value: state.branchLocked ? "LOCKED" : "UNLOCKED" },
             { label: "Stage State", value: state.stageState.toUpperCase() },
           ].map((item) => (
-            <div key={item.label} className="border border-[#b8c8d8] bg-[#ffffff] p-4">
-              <div className="text-[10px] font-bold text-[#4a6080] uppercase tracking-wide mb-1">{item.label}</div>
-              <div className="text-sm font-black text-[#004999]">{item.value}</div>
+            <div key={item.label} className="border border-[#e5e7eb] bg-[#ffffff] p-4">
+              <div className="text-[10px] font-bold text-[#6b7280] uppercase tracking-wide mb-1">{item.label}</div>
+              <div className="text-sm font-black text-[#111827]">{item.value}</div>
             </div>
           ))}
         </div>
 
-        <section className="mb-6 border border-[#6b8199] bg-[#f0f5fa] p-5">
+        <section className="mb-6 border border-[#e5e7eb] bg-[#f3f4f6] p-5">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h2 className="text-sm font-bold text-[#004999]">A. Session Start</h2>
-              <p className="text-xs text-[#4a6080] mt-1">심사 건 생성과 담당자 착수 판단을 먼저 수행합니다.</p>
+              <h2 className="text-sm font-semibold text-[#111827]">A. Session Start</h2>
+              <p className="text-xs text-[#6b7280] mt-1">심사 건 생성과 담당자 착수 판단을 먼저 수행합니다.</p>
             </div>
             <button
               onClick={() => {
@@ -115,45 +115,45 @@ export default function Step2Upload() {
                 toast.success("Review Session이 시작되었습니다.");
               }}
               className={`px-5 py-2.5 text-sm font-bold transition-colors ${
-                state.sessionStarted ? "border border-[#6b8199] text-[#004999]" : "bg-[#004999] text-[#ffffff] hover:bg-[#1a3a5c]"
+                state.sessionStarted ? "border border-[#e5e7eb] text-[#004999]" : "bg-[#004999] text-[#ffffff] hover:bg-[#003a7a]"
               }`}
             >
               {state.sessionStarted ? "세션 시작 완료" : "세션 시작"}
             </button>
           </div>
           <div className="grid grid-cols-3 gap-3">
-            <div className="border border-[#b8c8d8] bg-[#ffffff] p-3">
-              <div className="text-[10px] font-bold text-[#4a6080] uppercase">Owner</div>
-              <div className="text-sm font-bold text-[#004999] mt-1">김검토 심사역</div>
+            <div className="border border-[#e5e7eb] bg-[#ffffff] p-3">
+              <div className="text-[10px] font-bold text-[#6b7280] uppercase">Owner</div>
+              <div className="text-sm font-semibold text-[#111827] mt-1">김검토 심사역</div>
             </div>
-            <div className="border border-[#b8c8d8] bg-[#ffffff] p-3">
-              <div className="text-[10px] font-bold text-[#4a6080] uppercase">Case State</div>
-              <div className="text-sm font-bold text-[#004999] mt-1">{state.sessionStarted ? "검토 착수" : "미착수"}</div>
+            <div className="border border-[#e5e7eb] bg-[#ffffff] p-3">
+              <div className="text-[10px] font-bold text-[#6b7280] uppercase">Case State</div>
+              <div className="text-sm font-semibold text-[#111827] mt-1">{state.sessionStarted ? "검토 착수" : "미착수"}</div>
             </div>
-            <div className="border border-[#b8c8d8] bg-[#ffffff] p-3">
-              <div className="text-[10px] font-bold text-[#4a6080] uppercase">Entry Decision</div>
-              <div className="text-sm font-bold text-[#004999] mt-1">기본 문서 검토 대기</div>
+            <div className="border border-[#e5e7eb] bg-[#ffffff] p-3">
+              <div className="text-[10px] font-bold text-[#6b7280] uppercase">Entry Decision</div>
+              <div className="text-sm font-semibold text-[#111827] mt-1">기본 문서 검토 대기</div>
             </div>
           </div>
         </section>
 
         <section className="mb-6">
-          <h2 className="text-sm font-bold text-[#004999] mb-3 border-b border-[#b8c8d8] pb-2">B. Base Document Upload / Parse</h2>
+          <h2 className="text-sm font-semibold text-[#111827] mb-3 border-b border-[#e5e7eb] pb-2">B. Base Document Upload / Parse</h2>
           <div className="grid grid-cols-3 gap-6">
-            <div className="col-span-2 border border-[#6b8199] bg-[#ffffff]">
+            <div className="col-span-2 border border-[#e5e7eb] bg-[#ffffff]">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-[#f0f5fa] border-b border-[#6b8199]">
-                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#4a6080] uppercase">문서명</th>
-                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#4a6080] uppercase">업로드</th>
-                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#4a6080] uppercase">파싱</th>
-                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#4a6080] uppercase">분류</th>
-                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#4a6080] uppercase">복구 액션</th>
+                  <tr className="bg-[#f3f4f6] border-b border-[#e5e7eb]">
+                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#6b7280] uppercase">문서명</th>
+                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#6b7280] uppercase">업로드</th>
+                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#6b7280] uppercase">파싱</th>
+                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#6b7280] uppercase">분류</th>
+                    <th className="px-4 py-2.5 text-left text-[10px] font-bold text-[#6b7280] uppercase">복구 액션</th>
                   </tr>
                 </thead>
                 <tbody>
                   {BASE_DOCS.map((doc) => (
-                    <tr key={doc.name} className="border-b border-[#dce8f0]">
+                    <tr key={doc.name} className="border-b border-[#e5e7eb]">
                       <td className="px-4 py-3 text-xs font-medium text-[#004999]">{doc.name}</td>
                       <td className="px-4 py-3"><StatusBadge tone="light" label={doc.upload} /></td>
                       <td className="px-4 py-3">
@@ -164,7 +164,7 @@ export default function Step2Upload() {
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        {doc.classify === "-" ? <span className="text-[#6b8199] text-xs">재분석 필요</span> : <StatusBadge tone="dark" label={doc.classify} />}
+                        {doc.classify === "-" ? <span className="text-[#6b7280] text-xs">재분석 필요</span> : <StatusBadge tone="dark" label={doc.classify} />}
                       </td>
                       <td className="px-4 py-3">
                         {doc.parseStatus === "error" && !state.parseErrorResolved ? (
@@ -178,7 +178,7 @@ export default function Step2Upload() {
                             재파싱 완료 표시
                           </button>
                         ) : (
-                          <span className="text-[10px] font-bold text-[#4a6080]">정상</span>
+                          <span className="text-[10px] font-bold text-[#6b7280]">정상</span>
                         )}
                       </td>
                     </tr>
@@ -187,8 +187,8 @@ export default function Step2Upload() {
               </table>
             </div>
 
-            <div className="border border-[#b8c8d8] bg-[#ffffff] p-4">
-              <div className="text-[10px] font-bold text-[#4a6080] uppercase tracking-wide mb-3">Base Packet Checklist</div>
+            <div className="border border-[#e5e7eb] bg-[#ffffff] p-4">
+              <div className="text-[10px] font-bold text-[#6b7280] uppercase tracking-wide mb-3">Base Packet Checklist</div>
               <div className="space-y-2">
                 {BASE_CHECKLIST.map((item) => (
                   <div key={item} className="flex items-center gap-2">
@@ -203,12 +203,12 @@ export default function Step2Upload() {
           </div>
         </section>
 
-        <section className="mb-6 border border-[#6b8199] bg-[#f0f5fa] p-5">
-          <h2 className="text-sm font-bold text-[#004999] mb-2">C. Missing Document Check / Supplement Loop</h2>
+        <section className="mb-6 border border-[#e5e7eb] bg-[#f3f4f6] p-5">
+          <h2 className="text-sm font-semibold text-[#111827] mb-2">C. Missing Document Check / Supplement Loop</h2>
           <div className="flex items-center justify-between gap-4 mb-4">
             <div>
-              <div className="text-xs font-bold text-[#004999]">현재 상태: {state.supplementStatus.toUpperCase()}</div>
-              <div className="text-xs text-[#4a6080] mt-1">{getSupplementCopy(state.supplementStatus)}</div>
+              <div className="text-xs font-bold text-[#374151]">현재 상태: {state.supplementStatus.toUpperCase()}</div>
+              <div className="text-xs text-[#6b7280] mt-1">{getSupplementCopy(state.supplementStatus)}</div>
             </div>
             <div className="flex gap-2">
               <button
@@ -216,7 +216,7 @@ export default function Step2Upload() {
                   advanceSupplement();
                   toast.info("보완 루프 상태를 다음 단계로 진행했습니다.");
                 }}
-                className="px-4 py-2 border border-[#6b8199] text-xs font-bold text-[#004999] hover:bg-[#ffffff] transition-colors"
+                className="px-4 py-2 border border-[#e5e7eb] text-xs font-bold text-[#004999] hover:bg-[#ffffff] transition-colors"
               >
                 다음 루프 상태
               </button>
@@ -234,7 +234,7 @@ export default function Step2Upload() {
               <div
                 key={status}
                 className={`border px-3 py-2 text-center text-[10px] font-bold uppercase ${
-                  state.supplementStatus === status ? "border-[#004999] bg-[#004999] text-[#ffffff]" : "border-[#b8c8d8] bg-[#ffffff] text-[#4a6080]"
+                  state.supplementStatus === status ? "border-[#004999] bg-[#004999] text-[#ffffff]" : "border-[#e5e7eb] bg-[#ffffff] text-[#6b7280]"
                 }`}
               >
                 {status}
@@ -243,20 +243,20 @@ export default function Step2Upload() {
           </div>
         </section>
 
-        <section className="mb-6 border border-[#b8c8d8] bg-[#ffffff] p-5">
-          <h2 className="text-sm font-bold text-[#004999] mb-2">D. Compare / History / Internal Basis</h2>
+        <section className="mb-6 border border-[#e5e7eb] bg-[#ffffff] p-5">
+          <h2 className="text-sm font-semibold text-[#111827] mb-2">D. Compare / History / Internal Basis</h2>
           <div className="grid grid-cols-3 gap-4 mb-4">
-            <div className="border border-[#dce8f0] p-3 bg-[#f5f8fc]">
-              <div className="text-[10px] font-bold text-[#4a6080] uppercase mb-1">조건 비교</div>
-              <div className="text-xs text-[#0d1b2a]">Call Option 조항이 내부 표준안 대비 발행사 친화적으로 설정됨</div>
+            <div className="border border-[#e5e7eb] p-3 bg-[#f8f9fa]">
+              <div className="text-[10px] font-bold text-[#6b7280] uppercase mb-1">조건 비교</div>
+              <div className="text-xs text-[#111827]">Call Option 조항이 내부 표준안 대비 발행사 친화적으로 설정됨</div>
             </div>
-            <div className="border border-[#dce8f0] p-3 bg-[#f5f8fc]">
-              <div className="text-[10px] font-bold text-[#4a6080] uppercase mb-1">과거 기준</div>
-              <div className="text-xs text-[#0d1b2a]">유사 사례 평균 가산금리 +110bp</div>
+            <div className="border border-[#e5e7eb] p-3 bg-[#f8f9fa]">
+              <div className="text-[10px] font-bold text-[#6b7280] uppercase mb-1">과거 기준</div>
+              <div className="text-xs text-[#111827]">유사 사례 평균 가산금리 +110bp</div>
             </div>
-            <div className="border border-[#dce8f0] p-3 bg-[#f5f8fc]">
-              <div className="text-[10px] font-bold text-[#4a6080] uppercase mb-1">내부 자료</div>
-              <div className="text-xs text-[#0d1b2a]">사모 적격성은 인원수 확인 후 확정 필요</div>
+            <div className="border border-[#e5e7eb] p-3 bg-[#f8f9fa]">
+              <div className="text-[10px] font-bold text-[#6b7280] uppercase mb-1">내부 자료</div>
+              <div className="text-xs text-[#111827]">사모 적격성은 인원수 확인 후 확정 필요</div>
             </div>
           </div>
           <button
@@ -265,39 +265,39 @@ export default function Step2Upload() {
               toast.success("비교 결과를 검토 완료로 표시했습니다.");
             }}
             className={`px-4 py-2 text-xs font-bold transition-colors ${
-              state.comparisonReviewed ? "border border-[#6b8199] text-[#004999]" : "bg-[#004999] text-[#ffffff] hover:bg-[#1a3a5c]"
+              state.comparisonReviewed ? "border border-[#e5e7eb] text-[#004999]" : "bg-[#004999] text-[#ffffff] hover:bg-[#003a7a]"
             }`}
           >
             {state.comparisonReviewed ? "비교 결과 검토 완료" : "비교 결과 검토 완료 표시"}
           </button>
         </section>
 
-        <section className="mb-6 border border-[#6b8199] bg-[#f0f5fa] p-5">
-          <h2 className="text-sm font-bold text-[#004999] mb-1">E. Structure Lock</h2>
-          <p className="text-xs text-[#4a6080] mb-4">현재 단계의 구조 분류 결과를 바탕으로 단일 브랜치를 확정합니다.</p>
+        <section className="mb-6 border border-[#e5e7eb] bg-[#f3f4f6] p-5">
+          <h2 className="text-sm font-semibold text-[#111827] mb-1">E. Structure Lock</h2>
+          <p className="text-xs text-[#6b7280] mb-4">현재 단계의 구조 분류 결과를 바탕으로 단일 브랜치를 확정합니다.</p>
           <div className="grid grid-cols-3 gap-3 mb-4">
             {BRANCH_OPTIONS.map((option) => (
               <button
                 key={option.value}
                 onClick={() => setBranchType(option.value)}
                 className={`border p-4 text-left transition-colors ${
-                  state.branchType === option.value ? "border-[#004999] bg-[#004999] text-[#ffffff]" : "border-[#6b8199] bg-[#ffffff] text-[#004999] hover:bg-[#f5f8fc]"
+                  state.branchType === option.value ? "border-[#004999] bg-[#004999] text-[#ffffff]" : "border-[#e5e7eb] bg-[#ffffff] text-[#004999] hover:bg-[#f8f9fa]"
                 }`}
               >
                 <div className="text-sm font-bold">{option.label}</div>
-                <div className={`text-[11px] mt-1 ${state.branchType === option.value ? "text-[#dce8f0]" : "text-[#4a6080]"}`}>{option.desc}</div>
+                <div className={`text-[11px] mt-1 ${state.branchType === option.value ? "text-[#dbeafe]" : "text-[#6b7280]"}`}>{option.desc}</div>
               </button>
             ))}
           </div>
           <div className="flex items-center justify-between">
-            <div className="text-xs text-[#4a6080]">현재 선택: {BRANCH_OPTIONS.find((item) => item.value === state.branchType)?.label}</div>
+            <div className="text-xs text-[#6b7280]">현재 선택: {BRANCH_OPTIONS.find((item) => item.value === state.branchType)?.label}</div>
             <button
               onClick={() => {
                 lockBranch();
                 toast.success("구조 분기가 현재 단계 결과로 확정되었습니다.");
               }}
               className={`px-5 py-2.5 text-sm font-bold transition-colors ${
-                state.branchLocked ? "border border-[#6b8199] text-[#004999]" : "bg-[#004999] text-[#ffffff] hover:bg-[#1a3a5c]"
+                state.branchLocked ? "border border-[#e5e7eb] text-[#004999]" : "bg-[#004999] text-[#ffffff] hover:bg-[#003a7a]"
               }`}
             >
               {state.branchLocked ? "구조 확정 완료" : "구조 확정"}
@@ -305,11 +305,11 @@ export default function Step2Upload() {
           </div>
         </section>
 
-        <div className="border border-[#b8c8d8] bg-[#ffffff] p-4 mb-6">
-          <div className="text-[10px] font-bold text-[#4a6080] uppercase tracking-wide mb-2">Stage Exit</div>
+        <div className="border border-[#e5e7eb] bg-[#ffffff] p-4 mb-6">
+          <div className="text-[10px] font-bold text-[#6b7280] uppercase tracking-wide mb-2">Stage Exit</div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <div className="text-xs font-bold text-[#004999] mb-2">Proceed Blockers</div>
+              <div className="text-xs font-bold text-[#374151] mb-2">Proceed Blockers</div>
               <div className="space-y-1">
                 {[
                   { label: "세션 시작", done: state.sessionStarted },
@@ -320,30 +320,30 @@ export default function Step2Upload() {
                 ].map((item) => (
                   <div key={item.label} className="text-xs">
                     <span className={item.done ? "text-[#004999] font-medium" : "text-[#c0392b]"}>{item.done ? "완료" : "미완료"}</span>
-                    <span className="text-[#4a6080]"> · {item.label}</span>
+                    <span className="text-[#6b7280]"> · {item.label}</span>
                   </div>
                 ))}
               </div>
             </div>
             <div>
-              <div className="text-xs font-bold text-[#004999] mb-2">Next Transition</div>
-              <div className="text-xs text-[#4a6080] leading-relaxed">
+              <div className="text-xs font-bold text-[#374151] mb-2">Next Transition</div>
+              <div className="text-xs text-[#6b7280] leading-relaxed">
                 {canProceedFromStep2 ? "Stage 3 분석으로 이동할 수 있습니다." : "Stage 3로 이동하기 전에 모든 차단 항목을 해소해야 합니다."}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-[#b8c8d8]">
+        <div className="flex items-center justify-between pt-4 border-t border-[#e5e7eb]">
           <Link href={STAGE_ROUTE_MAP[1]}>
-            <button className="px-5 py-2.5 border border-[#6b8199] text-sm font-bold text-[#4a6080] hover:bg-[#f0f5fa] transition-colors">
+            <button className="px-5 py-2.5 border border-[#e5e7eb] text-sm font-bold text-[#6b7280] hover:bg-[#f3f4f6] transition-colors">
               ← 이전: 접수
             </button>
           </Link>
           <button
             onClick={handleProceed}
             className={`px-6 py-2.5 text-sm font-bold transition-colors ${
-              canProceedFromStep2 ? "bg-[#004999] text-[#ffffff] hover:bg-[#1a3a5c]" : "border border-[#b8c8d8] text-[#6b8199] cursor-not-allowed"
+              canProceedFromStep2 ? "bg-[#004999] text-[#ffffff] hover:bg-[#003a7a]" : "border border-[#e5e7eb] text-[#6b7280] cursor-not-allowed"
             }`}
           >
             다음 단계: Stage 3 →
