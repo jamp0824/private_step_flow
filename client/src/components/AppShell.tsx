@@ -4,12 +4,13 @@
  * Clean professional: white/light-gray base, IBK Blue for accents only
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import { getStageRoute, STAGE_LABELS } from "@/config/stages";
 import { useDemoCase } from "@/contexts/DemoCaseContext";
 import { useWorkflow } from "@/contexts/WorkflowContext";
+import { cn } from "@/lib/utils";
 
 interface NavItem {
   label: string;
@@ -36,6 +37,7 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 const DEFAULT_STAGE_LABELS = Object.values(STAGE_LABELS);
+const NAV_COLLAPSE_STORAGE_KEY = "ibk-app-shell-nav-collapsed";
 
 export default function AppShell({
   children,
@@ -47,9 +49,29 @@ export default function AppShell({
 }: AppShellProps) {
   const [location] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isNavCollapsed, setIsNavCollapsed] = useState(false);
   const { activeCaseId } = useDemoCase();
   const { state } = useWorkflow();
   const displayCaseId = caseId || activeCaseId;
+
+  useEffect(() => {
+    try {
+      const savedValue = window.localStorage.getItem(NAV_COLLAPSE_STORAGE_KEY);
+      if (savedValue !== null) {
+        setIsNavCollapsed(savedValue === "true");
+      }
+    } catch {
+      /* ignore storage errors */
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(NAV_COLLAPSE_STORAGE_KEY, String(isNavCollapsed));
+    } catch {
+      /* ignore storage errors */
+    }
+  }, [isNavCollapsed]);
 
   const handlePlaceholderClick = () => {
     toast.info("준비 중인 기능입니다.");
@@ -58,72 +80,158 @@ export default function AppShell({
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[#f8f9fa] text-[#111827]" style={{ fontFamily: "'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif" }}>
       {/* ── LEFT SIDEBAR ── */}
-      <nav className="w-60 flex-shrink-0 flex flex-col border-r border-[#e5e7eb] bg-[#ffffff] z-20">
+      <nav
+        className={cn(
+          "flex-shrink-0 flex flex-col border-r border-[#e5e7eb] bg-[#ffffff] z-20 transition-[width] duration-300 ease-out",
+          isNavCollapsed ? "w-[96px]" : "w-60",
+        )}
+      >
         {/* Brand */}
-        <div className="px-5 py-4 border-b border-[#e5e7eb]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-[#004999] flex items-center justify-center flex-shrink-0">
-              <span className="text-[#ffffff] text-xs font-black">IBK</span>
-            </div>
-            <div>
-              <div className="text-sm font-bold text-[#111827]">IBK시스템</div>
-              <div className="text-[10px] text-[#6b7280]">AI Copilot</div>
+        <div className={cn("border-b border-[#e5e7eb]", isNavCollapsed ? "px-3 py-6" : "px-5 py-4")}>
+          <div className={cn("flex items-center", isNavCollapsed ? "justify-center" : "justify-between gap-3")}>
+            <div className={cn("flex min-w-0", isNavCollapsed ? "justify-center" : "items-center gap-3")}>
+              <button
+                type="button"
+                aria-label={isNavCollapsed ? "사이드 메뉴 펼치기" : "사이드 메뉴 축소하기"}
+                onClick={() => setIsNavCollapsed((prev) => !prev)}
+                className={cn(
+                  "group relative overflow-hidden bg-[#004999] flex items-center justify-center flex-shrink-0 text-[#ffffff] font-black transition-all duration-300",
+                  isNavCollapsed ? "w-14 h-14 !rounded-[20px] text-xl" : "w-11 h-11 !rounded-[16px] text-sm",
+                )}
+              >
+                <span
+                  className={cn(
+                    "pointer-events-none absolute inset-0 flex items-center justify-center transition-all duration-200 group-hover:opacity-0 group-hover:scale-90",
+                    isNavCollapsed ? "text-xl" : "text-sm",
+                  )}
+                >
+                  IBK
+                </span>
+                <span
+                  className={cn(
+                    "material-symbols-outlined pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 scale-90 transition-all duration-200 group-hover:opacity-100 group-hover:scale-100",
+                    isNavCollapsed ? "text-[26px]" : "text-[20px]",
+                  )}
+                >
+                  {isNavCollapsed ? "left_panel_open" : "left_panel_close"}
+                </span>
+              </button>
+              {!isNavCollapsed && (
+                <div className="min-w-0">
+                  <div className="text-[15px] font-extrabold text-[#111827] truncate">심사지원플랫폼</div>
+                  <div className="text-xs text-[#94a3b8] font-medium">AI Copilot</div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <div className="flex-1 overflow-y-auto py-2">
-          {NAV_ITEMS.map((item) => {
-            const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
-            const isPlaceholder = item.href === "#";
+        <div className={cn("flex-1 overflow-y-auto", isNavCollapsed ? "px-2 py-5" : "px-3 py-4")}>
+          <div className={cn("flex", isNavCollapsed ? "flex-col items-center gap-3" : "flex-col gap-1.5")}>
+            {NAV_ITEMS.map((item) => {
+              const isActive = location === item.href || (item.href !== "/" && item.href !== "#" && location.startsWith(item.href));
+              const isPlaceholder = item.href === "#";
 
-            return (
-              <div key={item.label}>
-                {isPlaceholder ? (
-                  <button
-                    onClick={handlePlaceholderClick}
-                    className="w-full flex items-center px-4 py-2.5 text-[#6b7280] hover:bg-[#f3f4f6] hover:text-[#111827] transition-colors duration-100 text-sm font-medium"
+              const navContent = (
+                <div
+                  title={item.label}
+                  className={cn(
+                    "group transition-all duration-200",
+                    isNavCollapsed
+                      ? cn(
+                          "flex h-18 w-16 items-center justify-center !rounded-[20px] border border-transparent",
+                          isActive
+                            ? "bg-[#e8f0fe] text-[#004999]"
+                            : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#004999]",
+                        )
+                      : cn(
+                          "flex h-16 w-full items-center gap-3 px-4 !rounded-[20px] border border-transparent text-left",
+                          isActive
+                            ? "bg-[#dfeafe] text-[#004999]"
+                            : "text-[#475569] hover:bg-[#f8fafc] hover:text-[#0f172a]",
+                        ),
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "material-symbols-outlined transition-colors duration-200",
+                      isNavCollapsed ? "text-[28px]" : "text-[24px]",
+                      isActive ? "text-[#004999]" : "text-[#64748b] group-hover:text-[#004999]",
+                    )}
                   >
-                    <span className="material-symbols-outlined mr-3 text-[18px]">{item.icon}</span>
-                    {item.label}
-                  </button>
-                ) : (
-                  <Link href={item.href}>
-                    <div
-                      className={
-                        isActive
-                          ? "flex items-center px-4 py-2.5 text-[#004999] font-bold bg-[#eff6ff] text-sm cursor-pointer"
-                          : "flex items-center px-4 py-2.5 text-[#374151] hover:bg-[#f3f4f6] hover:text-[#111827] transition-colors duration-100 text-sm font-medium cursor-pointer"
-                      }
-                    >
-                      <span className={`material-symbols-outlined mr-3 text-[18px] ${isActive ? "text-[#004999]" : "text-[#9ca3af]"}`}>{item.icon}</span>
+                    {item.icon}
+                  </span>
+                  {!isNavCollapsed && (
+                    <span className={cn("text-[15px] leading-none", isActive ? "font-extrabold" : "font-semibold")}>
                       {item.label}
-                    </div>
-                  </Link>
-                )}
-              </div>
-            );
-          })}
+                    </span>
+                  )}
+                </div>
+              );
+
+              return (
+                <div key={item.label} className={cn(isNavCollapsed ? "w-full flex justify-center" : "w-full")}>
+                  {isPlaceholder ? (
+                    <button
+                      type="button"
+                      aria-label={item.label}
+                      onClick={handlePlaceholderClick}
+                      className={cn(isNavCollapsed ? "block" : "block w-full")}
+                    >
+                      {navContent}
+                    </button>
+                  ) : (
+                    <Link href={item.href}>
+                      <div className={cn(isNavCollapsed ? "block" : "w-full")}>
+                        {navContent}
+                      </div>
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Bottom user area */}
-        <div className="border-t border-[#e5e7eb] p-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-[#004999] rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-[#ffffff] text-xs font-bold">AI</span>
+        <div className={cn("border-t border-[#e5e7eb]", isNavCollapsed ? "px-2 py-4" : "p-4")}>
+          {isNavCollapsed ? (
+            <div className="flex flex-col items-center gap-3">
+              <button
+                type="button"
+                title="AI Copilot"
+                onClick={handlePlaceholderClick}
+                className="flex h-12 w-12 items-center justify-center !rounded-[16px] bg-[#004999] text-[#ffffff] transition-transform duration-200 hover:scale-[1.03]"
+              >
+                <span className="text-xs font-bold">AI</span>
+              </button>
+              <button
+                type="button"
+                title="설정"
+                onClick={handlePlaceholderClick}
+                className="flex h-12 w-12 items-center justify-center !rounded-[16px] text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#004999] transition-colors"
+              >
+                <span className="material-symbols-outlined text-[22px]">settings</span>
+              </button>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-xs font-bold text-[#111827] truncate">IBK System</div>
-              <div className="text-[10px] text-[#6b7280]">AI Copilot</div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-[#004999] !rounded-[14px] flex items-center justify-center flex-shrink-0">
+                <span className="text-[#ffffff] text-xs font-bold">AI</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-bold text-[#111827] truncate">IBK System</div>
+                <div className="text-[11px] text-[#94a3b8]">AI Copilot</div>
+              </div>
+              <button
+                onClick={handlePlaceholderClick}
+                className="w-10 h-10 !rounded-[12px] flex items-center justify-center text-[#94a3b8] hover:text-[#004999] hover:bg-[#eff6ff] transition-colors"
+              >
+                <span className="material-symbols-outlined text-[18px]">settings</span>
+              </button>
             </div>
-            <button
-              onClick={handlePlaceholderClick}
-              className="text-[#9ca3af] hover:text-[#374151] transition-colors"
-            >
-              <span className="material-symbols-outlined text-[18px]">settings</span>
-            </button>
-          </div>
+          )}
         </div>
       </nav>
 
