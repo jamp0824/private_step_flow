@@ -87,35 +87,42 @@ export default function AppShell({
         )}
       >
         {/* Brand */}
-        <div className={cn("border-b border-[#e5e7eb]", isNavCollapsed ? "px-3 py-6" : "px-5 py-4")}>
+        <div className={cn("h-[108px] border-b border-[#e5e7eb] flex items-center", isNavCollapsed ? "px-3" : "px-5")}>
           <div className={cn("flex items-center", isNavCollapsed ? "justify-center" : "justify-between gap-3")}>
             <div className={cn("flex min-w-0", isNavCollapsed ? "justify-center" : "items-center gap-3")}>
-              <button
-                type="button"
-                aria-label={isNavCollapsed ? "사이드 메뉴 펼치기" : "사이드 메뉴 축소하기"}
-                onClick={() => setIsNavCollapsed((prev) => !prev)}
-                className={cn(
-                  "group relative overflow-hidden bg-[#004999] flex items-center justify-center flex-shrink-0 text-[#ffffff] font-black transition-all duration-300",
-                  isNavCollapsed ? "w-14 h-14 !rounded-[20px] text-xl" : "w-11 h-11 !rounded-[16px] text-sm",
-                )}
-              >
-                <span
-                  className={cn(
-                    "pointer-events-none absolute inset-0 flex items-center justify-center transition-all duration-200 group-hover:opacity-0 group-hover:scale-90",
-                    isNavCollapsed ? "text-xl" : "text-sm",
-                  )}
+              {isNavCollapsed ? (
+                <button
+                  type="button"
+                  aria-label="사이드 메뉴 펼치기"
+                  onClick={() => setIsNavCollapsed(false)}
+                  className="group relative overflow-hidden bg-[#004999] flex items-center justify-center flex-shrink-0 text-[#ffffff] font-black transition-all duration-300 w-11 h-11 !rounded-[16px]"
                 >
+                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center transition-all duration-200 group-hover:opacity-0 group-hover:scale-90 text-xl">
+                    IBK
+                  </span>
+                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 scale-90 transition-all duration-200 group-hover:opacity-100 group-hover:scale-100">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="h-6 w-6"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.9"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="4.5" y="3.5" width="15" height="17" rx="1.5" />
+                      <path d="M10 4v16" />
+                      <path d="m13.5 12 2.5-2.5" />
+                      <path d="M13.5 12 16 14.5" />
+                    </svg>
+                  </span>
+                </button>
+              ) : (
+                <div className="bg-[#004999] flex items-center justify-center flex-shrink-0 text-[#ffffff] font-black transition-all duration-300 w-11 h-11 !rounded-[16px] text-sm">
                   IBK
-                </span>
-                <span
-                  className={cn(
-                    "material-symbols-outlined pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 scale-90 transition-all duration-200 group-hover:opacity-100 group-hover:scale-100",
-                    isNavCollapsed ? "text-[26px]" : "text-[20px]",
-                  )}
-                >
-                  {isNavCollapsed ? "left_panel_open" : "left_panel_close"}
-                </span>
-              </button>
+                </div>
+              )}
               {!isNavCollapsed && (
                 <div className="min-w-0">
                   <div className="text-[15px] font-extrabold text-[#111827] truncate">심사지원플랫폼</div>
@@ -123,6 +130,16 @@ export default function AppShell({
                 </div>
               )}
             </div>
+            {!isNavCollapsed && (
+              <button
+                type="button"
+                aria-label="사이드 메뉴 축소하기"
+                onClick={() => setIsNavCollapsed(true)}
+                className="flex h-10 w-10 flex-shrink-0 items-center justify-center !rounded-[14px] text-[#94a3b8] hover:bg-[#eff6ff] hover:text-[#004999] transition-all duration-200"
+              >
+                <span className="material-symbols-outlined text-[22px]">left_panel_close</span>
+              </button>
+            )}
           </div>
         </div>
 
